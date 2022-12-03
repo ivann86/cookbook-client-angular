@@ -1,0 +1,55 @@
+<div class="flex flex-col mt-6 px-4 mx-auto sm:max-w-lg gap-16">
+
+  <div>
+    <!-- <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company"> -->
+    <h2 class="mt-6 text-center text-3xl font-bold">Create a new account</h2>
+    <p class="mt-2 text-center text-sm">
+      Or
+      <a routerLink="/signin" class="font-medium text-primary">sign in here</a>
+    </p>
+  </div>
+
+  <form #form="ngForm">
+    <div class="form-control w-full">
+      <input type="text" name="email" placeholder="E-mail address" #email="ngModel" ngModel required email class="input input-bordered w-full" [ngClass]="email.invalid && email.dirty ? 'input-error' : ''" [ngModelOptions]="{updateOn: 'blur'}" />
+      <label class="label">
+        <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span>
+      </label>
+    </div>
+    <div class="form-control w-full">
+      <input type="text" name="firstName" placeholder="First name" #firstName="ngModel" ngModel class="input input-bordered w-full" [ngModelOptions]="{updateOn: 'blur'}" />
+      <label class="label">
+        <!-- <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span> -->
+      </label>
+    </div>
+    <div class="form-control w-full">
+      <input type="text" name="lastName" placeholder="Last name" #lastName="ngModel" ngModel class="input input-bordered w-full" [ngModelOptions]="{updateOn: 'blur'}" />
+      <label class="label">
+        <!-- <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span> -->
+      </label>
+    </div>
+    <div class="form-control w-full">
+      <input type="password" name="password" placeholder="New password" #password="ngModel" ngModel required minlength="6" class="input input-bordered w-full" />
+      <label class="label">
+        <!-- <span class="label-text-alt text-error"></span> -->
+      </label>
+    </div>
+    <div class="form-control w-full">
+      <input type="password" name="rePassword" placeholder="Confirm password" #rePasswor="ngModel" ngModel required minlength="6" class="input input-bordered w-full" />
+      <label class="label">
+        <!-- <span class="label-text-alt text-error"></span> -->
+      </label>
+    </div>
+    <div class="mt-6 flex justify-center gap-2">
+      <button class="btn btn-primary gap-2">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span>Register</span>
+      </button>
+      <button class="btn btn-error gap-2" routerLink="/">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <span>Cancel</span>
+      </button>
+    </div>
+  </form>
+
+</div>
