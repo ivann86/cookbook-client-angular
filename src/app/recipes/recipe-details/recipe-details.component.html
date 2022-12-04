@@ -1,113 +1,26 @@
-<div class="mt-16 px-6 flex flex-col gap-12">
-  <h1 class="text-5xl font-bold text-center">Пиле с грах и картофи на фурна</h1>
-  <img src="https://www.supichka.com/files/images/3281/fit_1400_933.jpg" />
-  <!-- <div class="">
-    <p>
-      Пилешкото месо не се използва особено често за приготвяне на кюфтенца.
-      Може би защото е малко по-сухо пилешкото месо намира други приложения,
-      рядко е в млян или кълцан вид. Рецептата за пилешки кюфтенца на фурна
-      показва обаче, че вкусното пилешко бяло месо може да изненада дори и под
-      формата на кюфтенца. Залагайки на охладено българско пилешко месо, каквото
-      е бялото пилешко месо на Лудогорско пиле, поставяш началото на едно много
-      лесно, изключително функционално и почти универсално любимо ястие, което
-      ще влезе в списъка с рецепти за лека вечеря.
-    </p>
-  </div> -->
+<div class="my-16 md:px-4 max-w-screen-lg mx-auto flex flex-col gap-12">
+  <h1 class="px-2 md:px-0 text-3xl sm:text-5xl font-bold text-center">{{recipe?.name}}</h1>
+  <img src="{{recipe?.imgUrl}}" class="sm:rounded-box" />
+  <p *ngIf="recipe?.description" class="px-2 md:px-0">{{recipe?.description}}</p>
   <div class="flex flex-col gap-6 lg:gap-6">
     <div class="divider text-xl uppercase">Необходими продукти</div>
-    <div class="w-full sm:w-2/3 lg:w-max mx-auto text-primary grid grid-cols-1 lg:grid-cols-2 gap-y-4 gap-x-48">
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-          <span>пилешко месо</span>
+    <div class="px-2 md:px-0 w-full md:max-w-screen-sm lg:max-w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-y-4 gap-x-32">
+      <div *ngFor="let ing of recipe?.ingredients" class="flex justify-between gap-16">
+        <div class="flex gap-4">
+          <svg class="text-primary w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+          <span class="text-left">{{ing.name}}</span>
         </div>
-        <span>500 гр.</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>галета</span>
-        </div>
-        <span>1/2 чаена чаша</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>олио</span>
-        </div>
-        <span>2 супени лъжици</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>пресен лук</span>
-        </div>
-        <span>2 стръка</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>черен пипер</span>
-        </div>
-        <span>1/3 чаена лъжица</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>яйца</span>
-        </div>
-        <span>1 брой</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>пармезан</span>
-        </div>
-        <span>1/2 чаена чаша</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>чесън</span>
-        </div>
-        <span>1 скилидка</span>
-      </div>
-      <div class="flex justify-between gap-16">
-        <div class="flex gap-2">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>сол</span>
-        </div>
-        <span>1/2 чаена лъжица</span>
+        <span class="text-right">{{ing.quantity}} {{ing.units}}</span>
       </div>
     </div>
   </div>
   <div class="flex flex-col gap-6 lg:gap-6">
     <div class="divider text-xl uppercase">Начин на приготвяне</div>
-    <ul class="">
-      <li>
-        Първата стъпка от рецептата за пилешки кюфтенца на фурна е изборът и
-        подготовката на пилешкото месо. Избирате качествено охладено българско
-        пилешко месо, за да имате гарантирано добър резултат. Пилешкото месо от
-        Лудогорско пиле е винаги добра идея. Накълцвате пилешкото месо на ситно,
-        най-лесно това може да стане в кухненски робот или чопър. Не смилайте
-        месото, оставете го на дребни парченца, за да получите по-хубави
-        кюфтенца.
+    <ol class="px-2 md:px-0 flex flex-col gap-6">
+      <li *ngFor="let step of recipe?.steps; let i = index" class="flex gap-4">
+        <div class="bg-primary text-primary-content font-thin flex-none rounded-full w-8 h-8 flex items-center justify-center">{{i + 1}}</div>
+        <div class="place-self-center">{{step}}</div>
       </li>
-      <li>
-        Изсипете накълцаното пилешко в купа. Добавете солта, яйцето,
-        настърганото сирене пармезан, олиото, както и галетата и черния пипер.
-        Назрежете на ситно почистения и измит лук, счукайте чесъна и ги добавете
-        към сместа. Разбърквате всичко много добре до получаване на хомогенно
-        тесто.
-      </li>
-      <li>
-        В голяма тава поставяте хартия за печене. От получената смес оформяте
-        малки кюфтенца с желаната от вас големина, които нареждате в тавата.
-        Печете пилешките кюфтенца в предварително загрята на 180 градуса фурна
-        за около 15-20 минути, до получаване на златист загар. Така получените
-        кюфтенца може да сервирате с добавка доматен сос или друг любим на вас
-        сос.
-      </li>
-    </ul>
+    </ol>
   </div>
 </div>

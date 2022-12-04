@@ -1,4 +1,24 @@
-<div class="w-full mx-auto md:max-w-fit sm:px-4 lg:px-6 sm:grid sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-6">
+<div class="my-16 w-full mx-auto sm:max-w-fit sm:px-4 lg:px-6 sm:grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+  <div *ngFor="let recipe of recipes">
+    <a routerLink="/recipes/{{recipe.id}}">
+      <div class="sm:card sm:w-72 bg-base-100 hover:bg-primary hover:text-primary-content sm:hover:scale-105 hover:z-50 sm:shadow-xl">
+        <figure><img src="{{recipe.imgSmallUrl}}" alt="Recipe image" /></figure>
+        <div class="card-body">
+          <h2 class="card-title sm:h-24">
+            {{recipe.name}}
+            <!-- <div class="badge badge-secondary">NEW</div> -->
+          </h2>
+          <!-- <p>{{recipe.steps[0]}}</p> -->
+          <!-- <p>Бърза и лесна рецепта за вкусна вечеря.</p> -->
+          <div class="card-actions justify-end">
+            <div class="badge badge-outline">{{recipe.portions}} порции</div> 
+            <div class="badge badge-outline">{{recipe.prepTime}} мин</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <!-- <app-recipe-card></app-recipe-card>
   <app-recipe-card></app-recipe-card>
   <app-recipe-card></app-recipe-card>
   <app-recipe-card></app-recipe-card>
@@ -6,6 +26,5 @@
   <app-recipe-card></app-recipe-card>
   <app-recipe-card></app-recipe-card>
   <app-recipe-card></app-recipe-card>
-  <app-recipe-card></app-recipe-card>
-  <app-recipe-card></app-recipe-card>
+  <app-recipe-card></app-recipe-card> -->
 </div>
