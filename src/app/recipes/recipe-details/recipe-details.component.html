@@ -18,7 +18,7 @@
     <div class="divider text-xl uppercase">Начин на приготвяне</div>
     <ol class="px-2 md:px-0 flex flex-col gap-6">
       <li *ngFor="let step of recipe?.steps; let i = index" class="flex gap-4">
-        <div class="bg-primary text-primary-content font-thin flex-none rounded-full w-8 h-8 flex items-center justify-center">{{i + 1}}</div>
+        <div class="place-self-start bg-primary text-primary-content flex-none rounded-full w-8 h-8 flex items-center justify-center">{{i + 1}}</div>
         <div class="place-self-center">{{step}}</div>
       </li>
     </ol>

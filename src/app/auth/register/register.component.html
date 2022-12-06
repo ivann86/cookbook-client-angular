@@ -9,37 +9,39 @@
     </p>
   </div>
 
-  <form #form="ngForm">
+  <form [formGroup]="form" (ngSubmit)="registerHandler()">
     <div class="form-control w-full">
-      <input type="text" name="email" placeholder="E-mail address" #email="ngModel" ngModel required email class="input input-bordered w-full" [ngClass]="email.invalid && email.dirty ? 'input-error' : ''" [ngModelOptions]="{updateOn: 'blur'}" />
+      <input type="text" name="email" formControlName="email" placeholder="E-mail address" class="input input-bordered w-full" [ngClass]="form.get('email')?.invalid && form.get('email')?.dirty ? 'input-error' : ''" />
       <label class="label">
-        <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span>
+        <span *ngIf="form.get('email')?.dirty && form.get('email')?.invalid" class="label-text-alt text-error">Invalid e-mail</span>
       </label>
     </div>
     <div class="form-control w-full">
-      <input type="text" name="firstName" placeholder="First name" #firstName="ngModel" ngModel class="input input-bordered w-full" [ngModelOptions]="{updateOn: 'blur'}" />
-      <label class="label">
-        <!-- <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span> -->
-      </label>
-    </div>
-    <div class="form-control w-full">
-      <input type="text" name="lastName" placeholder="Last name" #lastName="ngModel" ngModel class="input input-bordered w-full" [ngModelOptions]="{updateOn: 'blur'}" />
+      <input type="text" name="firstName" formControlName="firstName" placeholder="First name" class="input input-bordered w-full" />
       <label class="label">
         <!-- <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span> -->
       </label>
     </div>
     <div class="form-control w-full">
-      <input type="password" name="password" placeholder="New password" #password="ngModel" ngModel required minlength="6" class="input input-bordered w-full" />
+      <input type="text" name="lastName" formControlName="lastName" placeholder="Last name" class="input input-bordered w-full" />
       <label class="label">
-        <!-- <span class="label-text-alt text-error"></span> -->
+        <!-- <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span> -->
       </label>
     </div>
-    <div class="form-control w-full">
-      <input type="password" name="rePassword" placeholder="Confirm password" #rePasswor="ngModel" ngModel required minlength="6" class="input input-bordered w-full" />
-      <label class="label">
-        <!-- <span class="label-text-alt text-error"></span> -->
-      </label>
-    </div>
+    <ng-container formGroupName="passwords">
+      <div class="form-control w-full">
+        <input type="password" name="password" formControlName="password" placeholder="New password" class="input input-bordered w-full" [ngClass]="form.get('passwords')?.get('password')?.invalid && form.get('passwords')?.get('password')?.dirty ? 'input-error' : ''" />
+        <label class="label">
+          <!-- <span class="label-text-alt text-error"></span> -->
+        </label>
+      </div>
+      <div class="form-control w-full">
+        <input type="password" name="rePassword" formControlName="rePassword" placeholder="Confirm password" class="input input-bordered w-full" [ngClass]="form.get('passwords')?.invalid && form.get('passwords')?.get('rePassword')?.dirty ? 'input-error' : ''" />
+        <label class="label">
+          <!-- <span class="label-text-alt text-error"></span> -->
+        </label>
+      </div>
+    </ng-container>
     <div class="mt-6 flex justify-center gap-2">
       <button class="btn btn-primary gap-2">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
