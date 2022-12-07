@@ -1,8 +1,9 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Inject, Injectable, Provider } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, Provider } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UserState } from './app.module';
+import { selectFeatureToken } from './state/auth.selectors';
 
 const API_URL = environment.API_URL;
 
@@ -10,21 +11,24 @@ const API_URL = environment.API_URL;
   providedIn: 'root',
 })
 export class InterceptorService implements HttpInterceptor {
-  constructor(@Inject(UserState) private userState: BehaviorSubject<any>) {}
+  private token$: Observable<string>;
+
+  constructor(private store: Store) {
+    this.token$ = store.select(selectFeatureToken);
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let request = req;
     if (req.url.startsWith('/api')) {
       let headers: any;
       let token: string = '';
-      this.userState.subscribe((value) => {
-        token = value.token;
+      this.token$.subscribe((val) => {
+        token = val;
       });
       if (token) {
         headers = { Authorizatioin: 'Bearer ' + token };
       }
-      if (this.userState.subscribe())
-        request = req.clone({ url: req.url.replace('/api', API_URL), setHeaders: headers });
+      request = req.clone({ url: req.url.replace('/api', API_URL), setHeaders: headers });
     }
     return next.handle(request);
   }

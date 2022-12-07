@@ -10,13 +10,22 @@ import { RecipesModule } from './recipes/recipes.module';
 import { InterceptorProvider } from './interceptor.service';
 import { BehaviorSubject } from 'rxjs';
 import { StoreModule } from '@ngrx/store';
+import { tokenReducer, userReducer } from './state';
 
 export const UserState = new InjectionToken<any>('UserState');
 const userState = new BehaviorSubject({});
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CoreModule, AuthModule, RecipesModule, HttpClientModule, StoreModule.forRoot({}, {})],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    CoreModule,
+    AuthModule,
+    RecipesModule,
+    HttpClientModule,
+    StoreModule.forRoot({ token: tokenReducer, user: userReducer }),
+  ],
   providers: [
     InterceptorProvider,
     {

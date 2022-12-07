@@ -1,29 +1,36 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
-import { UserState } from '../app.module';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, tap } from 'rxjs';
+import { resetToken, setToken, setUser } from '../state';
+import { selectFeatureToken, selectFeatureUser } from '../state/auth.selectors';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  token: string = '';
-  user: any | undefined = undefined;
+  token$: Observable<string>;
 
-  constructor(private http: HttpClient, @Inject(UserState) private userState: BehaviorSubject<any>) {
-    this.token = this.readSavedToken() || '';
-    if (this.token) {
-      this.loadUser().subscribe();
-    }
+  constructor(private http: HttpClient, private store: Store) {
+    this.token$ = store.select(selectFeatureToken);
+    this.store.dispatch(setToken({ token: this.readSavedToken() || '' }));
+    this.loadUser().subscribe({
+      error: (err) => {
+        if (err.status === 401) {
+          this.store.dispatch(resetToken());
+          this.removeSavedToken();
+        }
+      },
+    });
   }
 
   register(email: string, firstName: string, lastName: string, password: string) {
     return this.http.post<any>('/api/auth/register', { email, firstName, lastName, password }).pipe(
       tap((res) => {
-        this.user = res.data.user;
-        this.token = res.data.token;
-        this.userState.next({ user: this.user, token: this.token });
-        this.saveToken();
+        if (res.data.token) {
+          this.saveToken(res.data.token);
+          this.store.dispatch(setToken({ token: res.data.token }));
+        }
       })
     );
   }
@@ -31,10 +38,10 @@ export class AuthService {
   logIn(email: string, password: string) {
     return this.http.post<any>('/api/auth/login', { email, password }).pipe(
       tap((res) => {
-        this.user = res.data.user;
-        this.token = res.data.token;
-        this.userState.next({ user: this.user, token: this.token });
-        this.saveToken();
+        if (res.data.token) {
+          this.saveToken(res.data.token);
+          this.store.dispatch(setToken({ token: res.data.token }));
+        }
       })
     );
   }
@@ -42,21 +49,31 @@ export class AuthService {
   logOut() {
     return this.http.get('/api/auth/logout').pipe(
       tap(() => {
-        this.user = undefined;
-        this.token = '';
+        this.store.dispatch(resetToken());
       })
     );
   }
 
-  private saveToken() {
-    localStorage.setItem('jwt', this.token);
+  private saveToken(token: string) {
+    localStorage.setItem('jwt', token);
   }
 
   private readSavedToken() {
     return localStorage.getItem('jwt');
   }
 
+  private removeSavedToken() {
+    return localStorage.removeItem('jwt');
+  }
+
   private loadUser() {
-    return this.http.get<any>('/api/auth/profile').pipe(tap((res) => (this.user = res.data.user)));
+    return this.http.get<any>('/api/auth/profile').pipe(
+      tap((res) => {
+        if (res.data.user) {
+          this.store.dispatch(setUser({ user: res.data.user }));
+          console.log(res.data.user);
+        }
+      })
+    );
   }
 }
