@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { resetToken, setToken, setUser } from '../state';
+import { resetToken, resetUser, setToken, setUser } from '../state';
 import { selectFeatureToken, selectFeatureUser } from '../state/auth.selectors';
 
 @Injectable({
@@ -14,13 +14,18 @@ export class AuthService {
   constructor(private http: HttpClient, private store: Store) {
     this.token$ = store.select(selectFeatureToken);
     this.store.dispatch(setToken({ token: this.readSavedToken() || '' }));
-    this.loadUser().subscribe({
-      error: (err) => {
-        if (err.status === 401) {
-          this.store.dispatch(resetToken());
-          this.removeSavedToken();
-        }
-      },
+    this.token$.subscribe((val) => {
+      if (!val) {
+        return;
+      }
+      this.loadUser().subscribe({
+        error: (err) => {
+          if (err.status === 401) {
+            this.store.dispatch(resetToken());
+            this.removeSavedToken();
+          }
+        },
+      });
     });
   }
 
@@ -49,7 +54,9 @@ export class AuthService {
   logOut() {
     return this.http.get('/api/auth/logout').pipe(
       tap(() => {
+        this.removeSavedToken();
         this.store.dispatch(resetToken());
+        this.store.dispatch(resetUser());
       })
     );
   }
@@ -71,7 +78,6 @@ export class AuthService {
       tap((res) => {
         if (res.data.user) {
           this.store.dispatch(setUser({ user: res.data.user }));
-          console.log(res.data.user);
         }
       })
     );

@@ -26,7 +26,7 @@ export class InterceptorService implements HttpInterceptor {
         token = val;
       });
       if (token) {
-        headers = { Authorizatioin: 'Bearer ' + token };
+        headers = { Authorization: 'Bearer ' + token };
       }
       request = req.clone({ url: req.url.replace('/api', API_URL), setHeaders: headers });
     }
