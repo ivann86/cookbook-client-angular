@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from '../shared/guards';
 import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { RecipesComponent } from './recipes/recipes.component';
@@ -15,6 +16,11 @@ const routes: Routes = [
   {
     path: 'add-recipe',
     component: AddRecipeComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      loggedInCanActivate: true,
+      redirect: '/signin',
+    },
   },
   {
     path: 'recipes/:id',

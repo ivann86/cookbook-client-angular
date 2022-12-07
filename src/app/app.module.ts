@@ -1,4 +1,4 @@
-import { InjectionToken, NgModule } from '@angular/core';
+import { APP_INITIALIZER, InjectionToken, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -8,31 +8,45 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { InterceptorProvider } from './interceptor.service';
-import { BehaviorSubject } from 'rxjs';
 import { StoreModule } from '@ngrx/store';
 import { tokenReducer, userReducer } from './state';
-
-export const UserState = new InjectionToken<any>('UserState');
-const userState = new BehaviorSubject({});
+import { AuthService } from './shared/auth.service';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     CoreModule,
     AuthModule,
     RecipesModule,
     HttpClientModule,
     StoreModule.forRoot({ token: tokenReducer, user: userReducer }),
+    AppRoutingModule,
   ],
   providers: [
-    InterceptorProvider,
     {
-      provide: UserState,
-      useValue: userState,
+      provide: APP_INITIALIZER,
+      useFactory: appInit,
+      multi: true,
+      deps: [AuthService],
     },
+    InterceptorProvider,
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+function appInit(auth: AuthService) {
+  return () =>
+    new Promise((resolve) => {
+      auth.loadUser().subscribe({
+        next: resolve,
+        error: (err) => {
+          if (err.status !== 401) {
+            console.error('Error loading user information', err);
+          }
+          resolve(true);
+        },
+      });
+    });
+}
