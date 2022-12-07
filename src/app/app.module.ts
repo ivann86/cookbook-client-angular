@@ -37,16 +37,5 @@ import { AuthService } from './shared/auth.service';
 export class AppModule {}
 
 function appInit(auth: AuthService) {
-  return () =>
-    new Promise((resolve) => {
-      auth.loadUser().subscribe({
-        next: resolve,
-        error: (err) => {
-          if (err.status !== 401) {
-            console.error('Error loading user information', err);
-          }
-          resolve(true);
-        },
-      });
-    });
+  return () => new Promise((resolve) => auth.loadUser().subscribe({ next: resolve, error: resolve }));
 }

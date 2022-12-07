@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { EMPTY, map, Observable, take, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { resetToken, resetUser, setToken, setUser } from '../state';
 import { selectFeatureToken, selectFeatureUser } from '../state/auth.selectors';
 
@@ -10,23 +10,12 @@ import { selectFeatureToken, selectFeatureUser } from '../state/auth.selectors';
 })
 export class AuthService {
   token$: Observable<string>;
+  user$: Observable<any>;
 
   constructor(private http: HttpClient, private store: Store) {
     this.token$ = store.select(selectFeatureToken);
+    this.user$ = store.select(selectFeatureUser);
     this.store.dispatch(setToken({ token: this.readSavedToken() || '' }));
-    this.token$.subscribe((token) => {
-      if (!token) {
-        return;
-      }
-      this.loadUser().subscribe({
-        error: (err) => {
-          if (err.status === 401) {
-            this.store.dispatch(resetToken());
-            this.removeSavedToken();
-          }
-        },
-      });
-    });
   }
 
   register(email: string, firstName: string, lastName: string, password: string) {
@@ -35,6 +24,7 @@ export class AuthService {
         if (res.data.token) {
           this.saveToken(res.data.token);
           this.store.dispatch(setToken({ token: res.data.token }));
+          this.loadUser().subscribe();
         }
       })
     );
@@ -46,6 +36,7 @@ export class AuthService {
         if (res.data.token) {
           this.saveToken(res.data.token);
           this.store.dispatch(setToken({ token: res.data.token }));
+          this.loadUser().subscribe();
         }
       })
     );
@@ -64,7 +55,7 @@ export class AuthService {
   loadUser() {
     return this.http.get<any>('/api/auth/profile').pipe(
       tap((res) => {
-        if (res.data.user) {
+        if (res.data?.user) {
           this.store.dispatch(setUser({ user: res.data.user }));
         }
       })
