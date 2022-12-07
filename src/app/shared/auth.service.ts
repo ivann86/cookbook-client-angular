@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { EMPTY, map, Observable, take, tap } from 'rxjs';
 import { resetToken, resetUser, setToken, setUser } from '../state';
 import { selectFeatureToken, selectFeatureUser } from '../state/auth.selectors';
 
@@ -14,8 +14,8 @@ export class AuthService {
   constructor(private http: HttpClient, private store: Store) {
     this.token$ = store.select(selectFeatureToken);
     this.store.dispatch(setToken({ token: this.readSavedToken() || '' }));
-    this.token$.subscribe((val) => {
-      if (!val) {
+    this.token$.subscribe((token) => {
+      if (!token) {
         return;
       }
       this.loadUser().subscribe({
@@ -61,6 +61,16 @@ export class AuthService {
     );
   }
 
+  loadUser() {
+    return this.http.get<any>('/api/auth/profile').pipe(
+      tap((res) => {
+        if (res.data.user) {
+          this.store.dispatch(setUser({ user: res.data.user }));
+        }
+      })
+    );
+  }
+
   private saveToken(token: string) {
     localStorage.setItem('jwt', token);
   }
@@ -71,15 +81,5 @@ export class AuthService {
 
   private removeSavedToken() {
     return localStorage.removeItem('jwt');
-  }
-
-  private loadUser() {
-    return this.http.get<any>('/api/auth/profile').pipe(
-      tap((res) => {
-        if (res.data.user) {
-          this.store.dispatch(setUser({ user: res.data.user }));
-        }
-      })
-    );
   }
 }
