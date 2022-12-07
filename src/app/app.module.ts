@@ -9,13 +9,14 @@ import { CoreModule } from './core/core.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { InterceptorProvider } from './interceptor.service';
 import { BehaviorSubject } from 'rxjs';
+import { StoreModule } from '@ngrx/store';
 
 export const UserState = new InjectionToken<any>('UserState');
 const userState = new BehaviorSubject({});
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CoreModule, AuthModule, RecipesModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, CoreModule, AuthModule, RecipesModule, HttpClientModule, StoreModule.forRoot({}, {})],
   providers: [
     InterceptorProvider,
     {
