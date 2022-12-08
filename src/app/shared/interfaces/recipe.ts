@@ -5,8 +5,9 @@ export interface Ingredient {
 }
 
 export interface Recipe {
-  id: string;
+  id?: string;
   name: string;
+  slug: string;
   description: string;
   imgUrl: string;
   imgSmallUrl: string;
@@ -14,7 +15,8 @@ export interface Recipe {
   steps: string[];
   prepTime: number;
   portions: number;
-  nationality: string;
-  categories: string[];
+  country: string;
   tags: string[];
+  owner?: string;
+  isOwner?: boolean;
 }
