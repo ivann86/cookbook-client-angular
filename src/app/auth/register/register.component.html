@@ -11,7 +11,7 @@
 
   <form [formGroup]="form" (ngSubmit)="registerHandler()">
     <div class="form-control w-full">
-      <input type="text" name="email" formControlName="email" placeholder="E-mail address" class="input input-bordered w-full" [ngClass]="form.get('email')?.invalid && form.get('email')?.dirty ? 'input-error' : ''" />
+      <input type="email" name="email" formControlName="email" placeholder="E-mail address" class="input input-bordered w-full" [ngClass]="form.get('email')?.invalid && form.get('email')?.dirty ? 'input-error' : ''" />
       <label class="label">
         <span *ngIf="form.get('email')?.dirty && form.get('email')?.invalid" class="label-text-alt text-error">Invalid e-mail</span>
       </label>
