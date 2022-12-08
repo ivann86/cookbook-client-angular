@@ -14,11 +14,6 @@ export class RecipesComponent implements OnInit {
   constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // this.api.loadAllRecipes().subscribe({
-    //   next: (value) => {
-    //     this.recipes = value.data.items.slice(30, 54);
-    //   },
-    // });
-    this.recipes = this.route.snapshot.data['recipes'].data.items.slice(60);
+    this.recipes = this.route.snapshot.data['recipes'];
   }
 }
