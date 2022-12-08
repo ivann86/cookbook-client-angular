@@ -1,4 +1,4 @@
-<div class="flex flex-col px-4 mt-6 mx-auto max-w-fit md:max-w-2xl lg:max-w-3xl gap-16">
+<div class="flex flex-col px-4 mt-6 mx-auto w-full sm:max-w-2xl lg:max-w-3xl gap-16">
 
   <div>
     <!-- <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company"> -->
@@ -6,10 +6,10 @@
   </div>
 
   <ul class="steps">
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(0)" [ngClass]="currentStep > -1 ? currentStep === 0 ? ['step-primary', 'text-primary'] : 'step-primary' : ''">Name and description</li>
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(1)" [ngClass]="currentStep > 0 ? currentStep === 1 ? ['step-primary', 'text-primary'] : 'step-primary' : ''">Ingredients</li>
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(2)" [ngClass]="currentStep > 1 ? currentStep === 2 ? ['step-primary', 'text-primary'] : 'step-primary' : ''">Cooking Instructions</li>
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(3)" [ngClass]="currentStep > 2 ? currentStep === 3 ? ['step-primary', 'text-primary'] : 'step-primary' : ''">Final details</li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(0)" [ngClass]="currentStep > -1 ? currentStep === 0 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Name and description</span></li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(1)" [ngClass]="currentStep > 0 ? currentStep === 1 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Ingredients</span></li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(2)" [ngClass]="currentStep > 1 ? currentStep === 2 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Cooking Instructions</span></li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(3)" [ngClass]="currentStep > 2 ? currentStep === 3 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Final details</span></li>
   </ul>
 
   <form [formGroup]="form" (submit)="submitHandler()">
@@ -34,23 +34,23 @@
     <div class="flex flex-col gap-6" [ngClass]="currentStep !== 1 ? 'hidden' : ''">
       <ol class="flex flex-col gap-4" formArrayName="ingredients">
         <li class="flex gap-4" *ngFor="let control of form.controls.ingredients.controls; index as i">
-          <div *ngIf="!control.disabled" [formGroupName]="i" class="flex gap-2 flex-grow"> 
+          <div *ngIf="!control?.disabled" [formGroupName]="i" class="flex gap-2 flex-grow"> 
             <div class="form-control flex-grow">
               <input type="text" name="ingName" placeholder="Ingredient" formControlName="name" class="input input-bordered" >              
               <label class="label">
-                <span *ngIf="control.get('name')?.dirty && control.get('name')?.invalid" class="label-text-alt text-error">Ingredient name is required</span>
+                <span *ngIf="control?.get('name')?.dirty && control?.get('name')?.invalid" class="label-text-alt text-error">Ingredient name is required</span>
               </label>
             </div>
             <div class="form-control w-28">
               <input type="text" name="quantity" placeholder="Quantity" formControlName="quantity" class="input input-bordered" >
               <label class="label">
-                <span *ngIf="control.get('name')?.dirty && control.get('name')?.invalid" class="label-text-alt text-error"></span>
+                <span *ngIf="control?.get('name')?.dirty && control?.get('name')?.invalid" class="label-text-alt text-error"></span>
               </label>
             </div>
             <div class="form-control w-28">
               <input type="text" name="units" placeholder="Units" formControlName="units" class="input input-bordered" >
               <label class="label">
-                <span *ngIf="control.get('name')?.dirty && control.get('name')?.invalid" class="label-text-alt text-error"></span>
+                <span *ngIf="control?.get('name')?.dirty && control?.get('name')?.invalid" class="label-text-alt text-error"></span>
               </label>
             </div>
           </div> 
@@ -62,11 +62,37 @@
             <span class="ml-auto text-right">{{control.get('quantity')?.value}} {{control.get('units')?.value}}</span>
           </div>
           <div class="flex gap-2 ml-auto">
-            <button *ngIf="!control.disabled" disabled="{{control.pristine || control.invalid ? true : ''}}" type="button" class="btn btn-xs btn-success rounded" (click)="toggleControlEdit(control)">
+            <button *ngIf="!control.disabled" [disabled]="control.invalid" type="button" class="btn btn-xs btn-success rounded" (click)="toggleControlEdit(control)">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </button>
             <button *ngIf="control.disabled" type="button" class="ml-auto btn btn-xs btn-error rounded" (click)="removeFormArrayControl(i, control)">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <div [formGroup]="ingredientsInputsGroup" class="flex gap-2 flex-grow"> 
+            <div class="form-control flex-grow">
+              <input type="text" name="ingName" placeholder="Ingredient" formControlName="name" class="input input-bordered" >              
+              <label class="label">
+                <span *ngIf="ingredientsInputsGroup.get('name')?.dirty && ingredientsInputsGroup.get('name')?.invalid" class="label-text-alt text-error">Ingredient name is required</span>
+              </label>
+            </div>
+            <div class="form-control w-28">
+              <input type="text" name="quantity" placeholder="Quantity" formControlName="quantity" class="input input-bordered" >
+              <label class="label">
+                <span *ngIf="ingredientsInputsGroup.get('quantity')?.dirty && ingredientsInputsGroup.get('quantity')?.invalid" class="label-text-alt text-error">Error</span>
+              </label>
+            </div>
+            <div class="form-control w-28">
+              <input type="text" name="units" placeholder="Units" formControlName="units" class="input input-bordered" >
+              <label class="label">
+                <span *ngIf="ingredientsInputsGroup.get('units')?.dirty && ingredientsInputsGroup.get('units')?.invalid" class="label-text-alt text-error">Error</span>
+              </label>
+            </div>
+          </div> <div class="flex gap-2 ml-auto">
+            <button disabled="{{ingredientsInputsGroup.pristine || ingredientsInputsGroup.invalid ? true : ''}}" type="button" class="btn btn-xs btn-success rounded" (click)="pushControlToArray(ingredientsInputsGroup, form.controls.ingredients)" >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </button>
           </div>
         </li>
@@ -76,8 +102,8 @@
     <!-- STEP 3 -->
     <div class="overflow-y-auto" [ngClass]="currentStep !== 2 ? 'hidden' : ''">
       <ol class="flex flex-col gap-4">
-        <li class="flex gap-4" *ngFor="let control of form.controls.cookingSteps.controls; index as i">
-          <div class="bg-primary text-primary-content flex-none rounded-full w-8 h-8 flex items-center justify-center" [ngClass]="control.pristine ? 'bg-opacity-30' : ''">{{i + 1}}</div>
+        <li class="flex gap-4" *ngFor="let control of form.controls.steps.controls; index as i">
+          <div class="bg-primary text-primary-content flex-none rounded-full w-8 h-8 flex items-center justify-center">{{i + 1}}</div>
           <div *ngIf="!control.disabled" class="form-control flex-grow">
             <textarea type="text" name="cookingStep" [formControl]="control" placeholder="Describe the instruction for this step of the meal preparation" class="h-32 input input-bordered flex-grow" (blur)="toggleControlEdit(control)"></textarea>       
             <label class="label">
@@ -86,11 +112,26 @@
            </div>
           <span *ngIf="control.disabled" class="flex-grow place-self-center hover:cursor-pointer hover:text-primary" (click)="toggleControlEdit(control)">{{control.value}}</span>
           <div class="flex gap-2">
-            <button *ngIf="!control.disabled" disabled="{{control.pristine || control.invalid ? true : ''}}" type="button" class="btn btn-xs btn-success rounded" (click)="toggleControlEdit(control)">
+            <button *ngIf="!control.disabled" [disabled]="control.invalid" type="button" class="btn btn-xs btn-success rounded" (click)="toggleControlEdit(control)">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </button>
             <button *ngIf="control.disabled" type="button" class="ml-auto btn btn-xs btn-error rounded" (click)="removeFormArrayControl(i, control)">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <div class="bg-primary text-primary-content flex-none rounded-full w-8 h-8 flex items-center justify-center bg-opacity-30">{{form.controls.steps.length + 1}}</div>
+          <div *ngIf="!cookingStepInput.disabled" class="form-control flex-grow">
+            <textarea type="text" name="cookingStep" [formControl]="cookingStepInput" placeholder="Describe the instruction for this step of the meal preparation" class="h-32 input input-bordered flex-grow"></textarea>       
+            <label class="label">
+              <span *ngIf="cookingStepInput?.dirty && cookingStepInput.invalid" class="label-text-alt text-error">This step should be at least 3 characters long</span>
+            </label>
+           </div>
+          <span *ngIf="cookingStepInput.disabled" class="flex-grow place-self-center hover:cursor-pointer hover:text-primary" (click)="toggleControlEdit(cookingStepInput)">{{cookingStepInput.value}}</span>
+          <div class="flex gap-2">
+            <button *ngIf="!cookingStepInput.disabled" disabled="{{cookingStepInput.pristine || cookingStepInput.invalid ? true : ''}}" type="button" class="btn btn-xs btn-success rounded" (click)="pushControlToArray(cookingStepInput, form.controls.steps)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </button>
           </div>
         </li>
@@ -99,17 +140,17 @@
 
     <!-- STEP 4 -->
     <div [ngClass]="currentStep !== 3 ? 'hidden' : ''">
-      <div class="flex justify-between flex-wrap gap-4">
-        <div class="form-control w-24  m-0">
+      <div class="flex justify-between flex-wrap sm:flex-nowrap gap-4">
+        <div class="form-control sm:w-32  m-0">
           <label class="label">
-            <span class="label-text">Cooking time</span>
+            <span class="label-text">Time (min)</span>
           </label>      
           <input type="number" name="name" placeholder="1" min=1 class="input input-bordered"  />
           <label class="label">
             <!-- <span *ngIf="name.dirty && name.invalid" class="label-text-alt text-error">The name of the recipe must be at least 3 characters long</span> -->
           </label>
         </div>
-        <div class="form-control w-24  m-0">
+        <div class="form-control sm:w-32  m-0">
           <label class="label">
             <span class="label-text">Portions</span>
           </label>      
@@ -118,15 +159,32 @@
             <!-- <span *ngIf="name.dirty && name.invalid" class="label-text-alt text-error">The name of the recipe must be at least 3 characters long</span> -->
           </label>
         </div>
-        <div class="form-control flex-grow m-0">
+        <div class="form-control w-full flex-grow m-0">
           <label class="label">
-            <span class="label-text">Nationality</span>
-          </label>      
-          <input type="text" name="name" placeholder="Nationality" min=1 class="input input-bordered"  />
-          <label class="label">
-            <!-- <span *ngIf="name.dirty && name.invalid" class="label-text-alt text-error">The name of the recipe must be at least 3 characters long</span> -->
-          </label>
+            <span class="label-text">Country</span>
+          </label>    
+          <select class="select select-bordered">
+            <option selected></option>
+            <option *ngFor="let country of (countries$ | async)">{{country}}</option>
+          </select>
         </div>
+     </div>
+     <div class="form-control w-full m-0">
+      <label class="label">
+        <span class="label-text">Image</span>
+      </label>    
+      <input type="file" class="file-input file-input-bordered w-full" formControlName="img" (change)="onFileInput($event)" />
+    </div>
+     <div>
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Tags</span>
+        </label> 
+        <textarea formControlName="tagsStr" class="textarea textarea-bordered h-20" placeholder="закуска,обяд,вечеря,предястие,основно,десерт,сос,гарнитура,празнична..."></textarea>
+        <label class="label">
+          <span class="label-text-alt"></span>
+        </label> 
+      </div>
      </div>
     </div>
 
