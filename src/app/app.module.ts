@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, InjectionToken, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -11,6 +11,9 @@ import { InterceptorProvider } from './interceptor.service';
 import { StoreModule } from '@ngrx/store';
 import { tokenReducer, userReducer } from './state';
 import { AuthService } from './shared/auth.service';
+import { catchError, EMPTY, Observable } from 'rxjs';
+
+const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pipe(catchError(() => EMPTY));
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,7 +38,3 @@ import { AuthService } from './shared/auth.service';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-function appInit(auth: AuthService) {
-  return () => new Promise((resolve) => auth.loadUser().subscribe({ next: resolve, error: resolve }));
-}
