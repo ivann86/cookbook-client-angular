@@ -20,3 +20,18 @@ export interface Recipe {
   owner?: string;
   isOwner?: boolean;
 }
+
+export interface RecipeStats {
+  total: number;
+  count: number;
+  page: number;
+  pageCount: number;
+  limit: number;
+}
+
+export interface RecipeQuery {
+  limit?: number;
+  page?: number;
+  country?: string;
+  tags?: { [key: string]: any };
+}
