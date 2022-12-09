@@ -1,27 +1,56 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { count, map, Observable, tap } from 'rxjs';
+import { selectFeatureRecipesQuery, setRecipesList, setRecipesStats } from '../state';
 import { selectFeatureUser } from '../state/auth.selectors';
-import { Recipe } from './interfaces';
+import { Recipe, RecipeQuery } from './interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   user$: Observable<any> = this.store.select(selectFeatureUser);
+  recipeQuery$ = this.store.select(selectFeatureRecipesQuery);
   userSnapshop: any = null;
+  recipeQuerySnapshot: RecipeQuery | null = null;
 
   constructor(private http: HttpClient, private store: Store) {
     this.user$.subscribe((user) => (this.userSnapshop = user));
+    this.recipeQuery$.subscribe((query) => {
+      this.recipeQuerySnapshot = query;
+    });
   }
 
-  public loadAllRecipes() {
-    return this.http.get<any>(`/api/recipes`).pipe(
-      map((res) => res.data.items),
-      map((recipes: Recipe[]) =>
-        recipes.map((recipe) => ({ ...recipe, isOwner: recipe.owner === this.userSnapshop?.id }))
-      )
+  public loadRecipes() {
+    const tags = Object.values(this.recipeQuerySnapshot!.tags!)
+      .map((obj) => Object.entries(obj).map(([key, value]) => (value ? key : null)))
+      .flat()
+      .filter((tag) => !!tag)
+      .join(',')
+      .toLowerCase();
+    const params = Object.entries(Object.assign({}, this.recipeQuerySnapshot!, { tags })).filter(
+      ([key, value]) => !!value
+    );
+    return this.http.get<any>(`/api/recipes`, { params: Object.fromEntries(params) }).pipe(
+      map((res) => res.data),
+      tap((data) =>
+        this.store.dispatch(
+          setRecipesStats({
+            recipesStats: {
+              total: data.total,
+              count: data.count,
+              page: data.page,
+              pageCount: Math.ceil(data.total / data.limit),
+              limit: data.limit,
+            },
+          })
+        )
+      ),
+      map((data) => {
+        data.items.forEach((recipe: Recipe) => (recipe.isOwner = recipe.owner === this.userSnapshop?.id));
+        return data.items;
+      })
     );
   }
 

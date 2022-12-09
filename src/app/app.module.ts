@@ -9,7 +9,7 @@ import { CoreModule } from './core/core.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { InterceptorProvider } from './interceptor.service';
 import { StoreModule } from '@ngrx/store';
-import { tokenReducer, userReducer } from './state';
+import { recipesListReduces, recipesQueryReducer, recipesStatsReducer, tokenReducer, userReducer } from './state';
 import { AuthService } from './shared/auth.service';
 import { catchError, EMPTY, Observable } from 'rxjs';
 
@@ -23,7 +23,13 @@ const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pi
     AuthModule,
     RecipesModule,
     HttpClientModule,
-    StoreModule.forRoot({ token: tokenReducer, user: userReducer }),
+    StoreModule.forRoot({
+      token: tokenReducer,
+      user: userReducer,
+      recipesQuery: recipesQueryReducer,
+      recipesStats: recipesStatsReducer,
+      recipes: recipesListReduces,
+    }),
     AppRoutingModule,
   ],
   providers: [

@@ -10,8 +10,8 @@ import { RecipesListResolverService } from './resolvers/recipes-list-resolver.se
 const routes: Routes = [
   {
     path: 'recipes',
-    resolve: { recipes: RecipesListResolverService },
     component: RecipesComponent,
+    resolve: { query: RecipesListResolverService },
   },
   {
     path: 'add-recipe',

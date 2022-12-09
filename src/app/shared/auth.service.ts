@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { resetToken, resetUser, setToken, setUser } from '../state';
-import { selectFeatureToken, selectFeatureUser } from '../state/auth.selectors';
+import { resetToken, resetUser, selectFeatureToken, selectFeatureUser, setToken, setUser } from '../state';
 
 @Injectable({
   providedIn: 'root',
