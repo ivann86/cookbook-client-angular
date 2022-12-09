@@ -7,11 +7,11 @@ export const initialUserState: any = null;
 export const tokenReducer = createReducer(
   initialTokenState,
   on(setToken, (state, { token }) => token),
-  on(resetToken, (state) => '')
+  on(resetToken, () => '')
 );
 
 export const userReducer = createReducer(
   initialUserState,
   on(setUser, (state, { user }) => user),
-  on(resetUser, (state) => null)
+  on(resetUser, () => null)
 );
