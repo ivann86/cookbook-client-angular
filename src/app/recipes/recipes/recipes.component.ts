@@ -27,13 +27,7 @@ export class RecipesComponent implements OnInit {
   currentPage: number = 0;
   pages: number[] = [];
 
-  constructor(
-    private api: ApiService,
-    private store: Store,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private router: Router
-  ) {
+  constructor(private api: ApiService, private store: Store, private route: ActivatedRoute) {
     this.store.select(selectFeatureRecipesStats).subscribe((stats) => {
       this.total = stats.total;
       let firstPage = stats.page - 3;
