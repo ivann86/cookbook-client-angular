@@ -1,12 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router, TitleStrategy } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { ApiService } from 'src/app/shared/api.service';
-import { Recipe, RecipeQuery } from 'src/app/shared/interfaces';
+import { RecipeQuery } from 'src/app/shared/interfaces';
 import {
-  resetRecipesList,
   selectFeatureRecipesList,
   selectFeatureRecipesQuery,
   selectFeatureRecipesStats,
@@ -73,25 +72,5 @@ export class RecipesComponent implements OnInit {
     }
     tags[category][tag as string] = check;
     this.store.dispatch(setRecipesQuery({ recipesQuery: { tags } }));
-  }
-
-  editHandler(slug: string) {
-    this.router.navigate(['/edit-recipe/' + slug]);
-  }
-
-  removeHandler(recipe: Recipe) {
-    if (!recipe.isOwner) {
-      return;
-    }
-    if (confirm(`Are you sure you want to delete recipe "${recipe.name}"?`)) {
-      this.api.deleteRecipe(recipe.slug).subscribe(() => {});
-    }
-  }
-
-  cardClickHandler(e: Event, slug: string) {
-    if ((e.target as HTMLElement).closest('#owner-actions')) {
-      return;
-    }
-    this.router.navigate(['/recipes/' + slug]);
   }
 }
