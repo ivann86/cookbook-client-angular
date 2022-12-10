@@ -17,29 +17,42 @@
       </ng-container>
     </ul>
   </div>
+
   <div class="my-8 flex-grow">
+
     <div class="mb-6 mx-auto w-full sm:max-w-fit sm:px-4 lg:px-6 sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
       <div *ngFor="let recipe of recipes$ | async">
-        <a routerLink="/recipes/{{recipe.slug}}">
-          <div class="sm:card sm:w-64 bg-base-100 hover:bg-primary hover:text-primary-content sm:hover:scale-105 hover:z-40 sm:shadow-xl">
+        <!-- <a routerLink="/recipes/{{recipe.slug}}" (click)="preventAnchor($event)"> -->
+          <div class="sm:card sm:w-64 bg-base-100 hover:bg-primary hover:text-primary-content sm:hover:scale-105 hover:z-40 sm:shadow-xl cursor-pointer" (click)="cardClickHandler($event, recipe.slug)">
             <figure><img src="{{recipe.imgSmallUrl}}" alt="Recipe image" /></figure>
             <div class="card-body">
-              <h2 class="card-title sm:h-24">
-                {{recipe.name}}
-                <!-- <div class="badge badge-secondary">NEW</div> -->
-              </h2>
-              <!-- <p>{{recipe.steps[0]}}</p> -->
-              <!-- <p>Бърза и лесна рецепта за вкусна вечеря.</p> -->
+              <h2 class="card-title sm:h-24">{{recipe.name}}</h2>
               <div class="card-actions justify-end">
-                <div class="badge badge-outline">{{recipe.portions}} порции</div> 
-                <div class="badge badge-outline">{{recipe.prepTime}} мин</div>
+                <div class="badge badge-outline">
+                  <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                  <span>{{recipe.portions}}</span>
+                </div> 
+                <div class="badge badge-outline">
+                  <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+                  <span>{{recipe.prepTime}} мин</span>
+                </div>
+              </div>
+              <div id="owner-actions" class="absolute z-20 top-2 right-2 p-2 bg-base-content bg-opacity-75 rounded-box flex gap-1" *ngIf="recipe.isOwner">
+                <button type="button" class="btn btn-xs btn-warning" (click)="editHandler(recipe.slug)">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>
+                </button>
+                <button type="button" class="btn btn-xs btn-error" (click)="removeHandler(recipe)">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
               </div>
             </div>
           </div>
-        </a>
+        <!-- </a> -->
       </div>
     </div>
+
     <div *ngIf="pages" class="btn-group flex justify-center">
       <button *ngFor="let page of pages; index as i" class="btn btn-md" [ngClass]="currentPage === page ? 'btn-active' : ''" (click)="this.navigatePage(page)">{{page}}</button>
     </div>
+
   </div>

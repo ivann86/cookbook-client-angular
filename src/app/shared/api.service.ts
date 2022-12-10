@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { count, map, Observable, tap } from 'rxjs';
-import { selectFeatureRecipesQuery, setRecipesList, setRecipesStats } from '../state';
+import { selectFeatureRecipesQuery, setRecipesList, setRecipesQuery, setRecipesStats } from '../state';
 import { selectFeatureUser } from '../state/auth.selectors';
 import { Recipe, RecipeQuery } from './interfaces';
 
@@ -70,6 +70,23 @@ export class ApiService {
       formData.append('image', image, image.name);
     }
     return this.http.post<any>(`/api/recipes`, formData);
+  }
+
+  public patchRecipe(slug: string, recipe: Recipe, image: File | null) {
+    const formData = new FormData();
+    for (let [key, value] of Object.entries(recipe)) {
+      formData.append(key, typeof value === 'string' ? value : JSON.stringify(value));
+    }
+    if (image) {
+      formData.append('image', image, image.name);
+    }
+    return this.http.patch<any>(`/api/recipes/${slug}`, formData);
+  }
+
+  public deleteRecipe(slug: string) {
+    return this.http
+      .delete(`/api/recipes/${slug}`)
+      .pipe(tap(() => this.store.dispatch(setRecipesQuery({ recipesQuery: this.recipeQuerySnapshot! }))));
   }
 
   public getCountriesList() {

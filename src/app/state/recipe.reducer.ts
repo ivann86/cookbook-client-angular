@@ -8,7 +8,14 @@ const tags = {
   Category: { Сосове: false, Гарнитури: false, Супи: false, Салати: false, Печива: true },
 };
 
-export const initalRecipesQueryState: RecipeQuery = { page: 1, limit: 20, country: '', tags };
+export const initalRecipesQueryState: RecipeQuery = {
+  page: 1,
+  limit: 20,
+  country: '',
+  sort: 'createdAt',
+  order: 1,
+  tags,
+};
 export const initialRecipesStatsState: RecipeStats = { total: 0, count: 0, limit: 20, page: 0, pageCount: 0 };
 export const initialRecipesListState: Recipe[] = [];
 

@@ -15,7 +15,6 @@ export interface Recipe {
   steps: string[];
   prepTime: number;
   portions: number;
-  country: string;
   tags: string[];
   owner?: string;
   isOwner?: boolean;
@@ -30,8 +29,10 @@ export interface RecipeStats {
 }
 
 export interface RecipeQuery {
-  limit?: number;
-  page?: number;
+  limit?: number | string;
+  page?: number | string;
   country?: string;
+  sort?: string;
+  order?: number | string;
   tags?: { [key: string]: any };
 }

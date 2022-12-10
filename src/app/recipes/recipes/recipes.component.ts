@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, TitleStrategy } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { ApiService } from 'src/app/shared/api.service';
-import { RecipeQuery } from 'src/app/shared/interfaces';
+import { Recipe, RecipeQuery } from 'src/app/shared/interfaces';
 import {
   resetRecipesList,
   selectFeatureRecipesList,
@@ -28,7 +28,13 @@ export class RecipesComponent implements OnInit {
   currentPage: number = 0;
   pages: number[] = [];
 
-  constructor(private api: ApiService, private store: Store, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(
+    private api: ApiService,
+    private store: Store,
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.store.select(selectFeatureRecipesStats).subscribe((stats) => {
       this.total = stats.total;
       let firstPage = stats.page - 3;
@@ -67,5 +73,22 @@ export class RecipesComponent implements OnInit {
     }
     tags[category][tag as string] = check;
     this.store.dispatch(setRecipesQuery({ recipesQuery: { tags } }));
+  }
+
+  editHandler(slug: string) {
+    this.router.navigate(['/edit-recipe/' + slug]);
+  }
+
+  removeHandler(recipe: Recipe) {
+    if (confirm(`Are you sure you want to delete recipe "${recipe.name}"?`)) {
+      this.api.deleteRecipe(recipe.slug).subscribe(() => {});
+    }
+  }
+
+  cardClickHandler(e: Event, slug: string) {
+    if ((e.target as HTMLElement).closest('#owner-actions')) {
+      return;
+    }
+    this.router.navigate(['/recipes/' + slug]);
   }
 }
