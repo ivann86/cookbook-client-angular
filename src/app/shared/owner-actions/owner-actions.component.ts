@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Recipe } from '../interfaces';
@@ -11,6 +11,9 @@ import { Recipe } from '../interfaces';
 export class OwnerActionsComponent {
   @Input() recipe: Recipe | null = null;
   @Input() size: 'tiny' | 'normal' = 'normal';
+  @Input() labels: boolean = true;
+
+  @Output() delAction = new EventEmitter();
 
   constructor(private api: ApiService, private router: Router) {}
 
@@ -27,6 +30,7 @@ export class OwnerActionsComponent {
     }
     if (confirm(`Are you sure you want to delete recipe "${this.recipe.name}"?`)) {
       this.api.deleteRecipe(this.recipe.slug).subscribe(() => {});
+      this.delAction.emit();
     }
   }
 }
