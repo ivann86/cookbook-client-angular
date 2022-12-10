@@ -1,11 +1,23 @@
 <div class="mx-auto my-12 px-6 flex flex-col gap-8 min-h-screen">
 
+  <div class="hero">
+    <div class="hero-content flex-col lg:gap-32 lg:flex-row-reverse">
+      <img src="/assets/hero.jpg" class="max-w-lg rounded-box shadow-2xl" />
+      <div>
+        <h1 class="text-5xl font-bold">Cookbook</h1>
+        <p class="py-6">Cookbook e курсов проект за курса Angular - ноември 2022 в СофтУни. Рецептите са примерни, с демонстрационна цел и не са дело на автора на сайта.
+        </p>
+        <button class="btn btn-primary" routerLink="/recipes">Browse all</button>
+      </div>
+    </div>
+  </div>
+
   <ng-container *ngFor="let carousel of carousels">
-    <h1 class="text-primary text-5xl py-2 border-b-2 border-b-secondary uppercase">{{carousel[0]}}</h1>
+    <h1 class="text-primary text-4xl font-thin py-2 border-b-2 border-b-secondary uppercase">{{carousel[0]}}</h1>
     <div class="w-full pb-8 px-2 flex overflow-scroll gap-4">
       <app-recipe-card *ngFor="let recipe of (castObservable(carousel[1]) | async)" [recipe]="recipe"></app-recipe-card>
     </div>
   </ng-container>
 
-?
+
 </div>
