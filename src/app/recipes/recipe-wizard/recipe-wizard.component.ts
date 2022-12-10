@@ -17,7 +17,6 @@ export class RecipeWizardComponent implements OnInit {
   @Output() finish = new EventEmitter();
 
   currentStep: number = 0;
-  countries$: Observable<string[]> = new Observable();
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -39,7 +38,6 @@ export class RecipeWizardComponent implements OnInit {
   constructor(private fb: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
-    this.countries$ = this.api.getCountriesList();
     this.form.controls.name.setValue(this.recipe?.name || '');
     this.form.controls.description.setValue(this.recipe?.description || '');
     this.form.controls.prepTime.setValue(this.recipe?.prepTime || 1);

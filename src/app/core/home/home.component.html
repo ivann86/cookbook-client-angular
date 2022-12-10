@@ -1,0 +1,11 @@
+<div class="mx-auto my-12 px-6 flex flex-col gap-8 min-h-screen">
+
+  <ng-container *ngFor="let carousel of carousels">
+    <h1 class="text-primary text-5xl py-2 border-b-2 border-b-secondary uppercase">{{carousel[0]}}</h1>
+    <div class="w-full pb-8 px-2 flex overflow-scroll gap-4">
+      <app-recipe-card *ngFor="let recipe of (castObservable(carousel[1]) | async)" [recipe]="recipe"></app-recipe-card>
+    </div>
+  </ng-container>
+
+?
+</div>

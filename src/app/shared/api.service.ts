@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { count, map, Observable, tap } from 'rxjs';
-import { selectFeatureRecipesQuery, setRecipesList, setRecipesQuery, setRecipesStats } from '../state';
+import { map, Observable, tap } from 'rxjs';
+import { selectFeatureRecipesQuery, setRecipesQuery, setRecipesStats } from '../state';
 import { selectFeatureUser } from '../state/auth.selectors';
 import { Recipe, RecipeQuery } from './interfaces';
 
@@ -20,6 +20,12 @@ export class ApiService {
     this.recipeQuery$.subscribe((query) => {
       this.recipeQuerySnapshot = query;
     });
+  }
+
+  public loadSample(tags: string[], limit: number) {
+    return this.http
+      .get<any>('/api/recipes/sample', { params: { tags: tags.join(','), limit } })
+      .pipe<Recipe[]>(map((res) => res.data.items as Recipe[]));
   }
 
   public loadRecipes() {
@@ -87,15 +93,5 @@ export class ApiService {
     return this.http
       .delete(`/api/recipes/${slug}`)
       .pipe(tap(() => this.store.dispatch(setRecipesQuery({ recipesQuery: this.recipeQuerySnapshot! }))));
-  }
-
-  public getCountriesList() {
-    return this.http
-      .get<string[]>('https://restcountries.com/v3.1/all')
-      .pipe(
-        map((countries) =>
-          countries.map((country: any) => country.name.common).sort((a: string, b: string) => a.localeCompare(b))
-        )
-      );
   }
 }
