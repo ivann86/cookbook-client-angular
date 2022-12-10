@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RecipesListResolverService } from './recipes-list-resolver.service';
+import { RecipesQueryResolverService } from './recipes-query-resolver.service';
 
 describe('RecipesListResolverService', () => {
-  let service: RecipesListResolverService;
+  let service: RecipesQueryResolverService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RecipesListResolverService);
+    service = TestBed.inject(RecipesQueryResolverService);
   });
 
   it('should be created', () => {

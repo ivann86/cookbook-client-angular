@@ -9,29 +9,32 @@ import { selectFeatureRecipesQuery } from 'src/app/state';
 @Injectable({
   providedIn: 'root',
 })
-export class RecipesListResolverService implements Resolve<Observable<RecipeQuery>> {
+export class RecipesQueryResolverService implements Resolve<Observable<RecipeQuery>> {
   constructor(private store: Store) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<RecipeQuery> {
     return new Observable((sub) => {
       this.store.select(selectFeatureRecipesQuery).subscribe((query) => {
-        const limit = +route.queryParams['limit'] || query.limit;
-        const page = +route.queryParams['page'] || query.page;
-        const country = route.queryParams['country'];
-        const tags: any = {};
+        const newQuery: RecipeQuery = {};
+
+        Object.keys(query).forEach((key) => {
+          newQuery[key as keyof RecipeQuery] = route.queryParams[key] || query[key as keyof RecipeQuery];
+        });
+
+        newQuery.tags = {};
 
         ((route.queryParams['tags'] || '').split(',') as string[])
           .map((tagInQuery) => tagInQuery.trim())
           .forEach((tagInQuery) => {
             for (let category in query.tags) {
-              tags[category] = {};
+              newQuery.tags![category] = {};
               for (let tag in query.tags[category]) {
-                tags[category][tag] = tag.toLowerCase() === tagInQuery.toLowerCase();
+                newQuery.tags![category][tag] = tag.toLowerCase() === tagInQuery.toLowerCase();
               }
             }
           });
 
-        sub.next(Object.assign({}, query, { limit, page, country, tags }));
+        sub.next(newQuery);
       });
     });
   }
