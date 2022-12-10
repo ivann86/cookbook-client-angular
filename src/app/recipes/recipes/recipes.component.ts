@@ -80,6 +80,9 @@ export class RecipesComponent implements OnInit {
   }
 
   removeHandler(recipe: Recipe) {
+    if (!recipe.isOwner) {
+      return;
+    }
     if (confirm(`Are you sure you want to delete recipe "${recipe.name}"?`)) {
       this.api.deleteRecipe(recipe.slug).subscribe(() => {});
     }
