@@ -13,7 +13,7 @@ export const initalRecipesQueryState: RecipeQuery = {
   limit: 20,
   country: '',
   sort: 'createdAt',
-  order: 1,
+  order: -1,
   tags,
 };
 export const initialRecipesStatsState: RecipeStats = { total: 0, count: 0, limit: 20, page: 0, pageCount: 0 };
