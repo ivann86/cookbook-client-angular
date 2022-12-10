@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface Ingredient {
   name: string;
   quantity: number;
@@ -16,8 +18,10 @@ export interface Recipe {
   prepTime: number;
   portions: number;
   tags: string[];
-  owner?: string;
+  owner?: User;
   isOwner?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface RecipeStats {

@@ -48,7 +48,7 @@ export class ApiService {
         )
       ),
       map((data) => {
-        data.items.forEach((recipe: Recipe) => (recipe.isOwner = recipe.owner === this.userSnapshop?.id));
+        data.items.forEach((recipe: Recipe) => (recipe.isOwner = recipe.owner?.id === this.userSnapshop?.id));
         return data.items;
       })
     );
@@ -57,7 +57,7 @@ export class ApiService {
   public loadRecipe(id: string) {
     return this.http.get<any>(`/api/recipes/${id}`).pipe(
       map((res) => res.data.recipe),
-      map((recipe) => ({ ...recipe, isOwner: recipe.owner === this.userSnapshop?.id }))
+      map((recipe) => ({ ...recipe, isOwner: recipe.owner.id === this.userSnapshop?.id }))
     );
   }
 

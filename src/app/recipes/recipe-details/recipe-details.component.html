@@ -1,13 +1,38 @@
-<div class="my-16 md:px-4 max-w-screen-lg mx-auto flex flex-col gap-12">
+<div class="my-12 md:px-4 max-w-screen-lg mx-auto flex flex-col gap-8">
   <h1 class="px-2 md:px-0 text-3xl sm:text-5xl font-bold text-center">{{recipe?.name}}</h1>
   <img src="{{recipe?.imgUrl}}" class="sm:rounded-box" />
+  <div class="flex place-content-center">
+    <ul class="flex-grow flex flex-row flex-wrap gap-4 justify-around text-xl">
+      <li class="flex flex-col place-items-center justify-center gap-4">
+        <div class="text-primary"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg></div>
+        <div>{{recipe?.portions}} {{recipe?.portions === 1 ? 'порция' : 'порции'}}</div>
+      </li>
+      <li class="flex flex-col place-items-center justify-center gap-4">
+        <div class="text-primary"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg></div>
+        <div>{{recipe?.prepTime}} минут{{recipe?.prepTime === 1 ? 'а' : 'и'}}</div>
+      </li>
+      <li class="flex flex-col place-items-center justify-center gap-4">
+        <div class="text-primary"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg></div>
+        <div>{{recipe?.createdAt | date : 'dd.MM.yyyy'}}</div>
+      </li>
+      <li *ngIf="!recipe?.isOwner" class="flex flex-col place-items-center justify-center gap-4">
+        <div class="text-primary"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg></div>
+        <div *ngIf="recipe?.owner?.firstName">{{recipe?.owner?.firstName}} {{recipe?.owner?.lastName}}</div>
+        <div *ngIf="!recipe?.owner?.firstName">{{recipe?.owner?.email}}</div>
+      </li>
+    </ul>
+    <ng-container *ngIf="recipe?.isOwner">
+      <div class="divider divider-horizontal"></div>
+      <app-owner-actions size="normal" [recipe]="recipe" id="owner-actions" class="flex gap-2 flex-col" (delAction)="deleteHandler()"></app-owner-actions> 
+    </ng-container>
+  </div>
   <p *ngIf="recipe?.description" class="px-2 md:px-0">{{recipe?.description}}</p>
   <div class="flex flex-col gap-6 lg:gap-6">
     <div class="divider text-xl uppercase">Необходими продукти</div>
     <div class="px-2 md:px-0 w-full md:max-w-screen-sm lg:max-w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-y-4 gap-x-32">
       <div *ngFor="let ing of recipe?.ingredients" class="flex justify-between gap-16">
         <div class="flex gap-4">
-          <svg class="text-secondary w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+          <svg class="text-primary w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
           <span class="text-left">{{ing.name}}</span>
         </div>
         <span class="text-right">{{ing.quantity}} {{ing.units}}</span>
@@ -18,7 +43,7 @@
     <div class="divider text-xl uppercase">Начин на приготвяне</div>
     <ol class="px-2 md:px-0 flex flex-col gap-6">
       <li *ngFor="let step of recipe?.steps; let i = index" class="flex gap-4">
-        <div class="place-self-start bg-secondary text-secondary-content flex-none rounded-full w-8 h-8 flex items-center justify-center">{{i + 1}}</div>
+        <div class="place-self-start bg-primary text-primary-content flex-none rounded-full w-8 h-8 flex items-center justify-center">{{i + 1}}</div>
         <div class="place-self-center">{{step}}</div>
       </li>
     </ol>
