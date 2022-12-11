@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Injectable, Provider } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, EMPTY, map, Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { setError } from './state';
 import { selectFeatureToken } from './state/auth.selectors';
@@ -38,7 +38,16 @@ export class InterceptorService implements HttpInterceptor {
       }
       request = req.clone({ url: req.url.replace('/api', API_URL), setHeaders: headers });
     }
+
     return next.handle(request).pipe(
+      // Handle expired token
+      catchError((err) => {
+        if (req.url.endsWith('/profile') && err.status === 401) {
+          return EMPTY;
+        }
+        return throwError(() => err);
+      }),
+      // Dispatch error message to state
       catchError((err) => {
         this.store.dispatch(setError({ message: err.error?.error?.message || err.message }));
         return EMPTY;
