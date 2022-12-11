@@ -18,7 +18,7 @@ import {
 })
 export class RecipesComponent implements OnInit {
   querySnapshot: RecipeQuery | null = null;
-  recipes$ = this.store.select(selectFeatureRecipesList).pipe(tap(console.log));
+  recipes$ = this.store.select(selectFeatureRecipesList);
   query$ = this.store.select(selectFeatureRecipesQuery);
   total = 0;
   limit: number = 20;
