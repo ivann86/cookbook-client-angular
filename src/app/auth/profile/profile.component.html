@@ -1,0 +1,24 @@
+<img class="w-full h-48 object-cover" src="/assets/profile-background.jpg">
+
+
+  
+
+<div class="mb-12 mx-auto w-full sm:max-w-fit sm:px-4 lg:px-6 sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
+  <div class="col-span-2 lg:col-span-3 xl:col-span-4 relative">
+    <svg class="px-4 bg-base-100 border-2 border-primary rounded-full w-48 h-48 absolute -translate-y-1/2 " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+    <div class="left-56 top-4 absolute">
+      <h1 class="text-3xl font-bold text-primary">{{(user$|async).firstName}} {{(user$|async).lastName}}</h1>
+      <span class="text-secondary">{{(user$|async).email}}</span>
+    </div>
+  </div>
+
+  <div class="mt-32 col-span-2 lg:col-span-3 xl:col-span-4">
+    <h1 class="text-primary text-4xl font-thin py-2 border-b-2 border-b-secondary uppercase">
+      <span *ngIf="(recipes$| async)?.length">Mоите рецепти</span>
+      <span *ngIf="!(recipes$| async)?.length">Нямате добавени рецепи</span>
+    </h1>
+  </div>
+
+  <app-recipe-card *ngFor="let recipe of recipes$ | async" [recipe]="recipe"></app-recipe-card>
+</div>
+

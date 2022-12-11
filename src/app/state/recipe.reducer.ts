@@ -14,6 +14,7 @@ export const initalRecipesQueryState: RecipeQuery = {
   country: '',
   sort: 'createdAt',
   order: -1,
+  owner: '',
   tags,
 };
 export const initialRecipesStatsState: RecipeStats = { total: 0, count: 0, limit: 20, page: 0, pageCount: 0 };

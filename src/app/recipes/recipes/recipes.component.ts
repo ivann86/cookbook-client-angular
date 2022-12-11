@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { ApiService } from 'src/app/shared/api.service';
@@ -9,7 +8,6 @@ import {
   selectFeatureRecipesList,
   selectFeatureRecipesQuery,
   selectFeatureRecipesStats,
-  setRecipesList,
   setRecipesQuery,
 } from 'src/app/state';
 
@@ -19,9 +17,9 @@ import {
   styleUrls: ['./recipes.component.css'],
 })
 export class RecipesComponent implements OnInit {
-  recipes$ = this.store.select(selectFeatureRecipesList);
-  query$ = this.store.select(selectFeatureRecipesQuery);
   querySnapshot: RecipeQuery | null = null;
+  recipes$ = this.store.select(selectFeatureRecipesList).pipe(tap(console.log));
+  query$ = this.store.select(selectFeatureRecipesQuery);
   total = 0;
   limit: number = 20;
   currentPage: number = 0;
@@ -44,14 +42,14 @@ export class RecipesComponent implements OnInit {
     this.store.dispatch(setRecipesQuery({ recipesQuery: this.route.snapshot.data['query'] }));
     this.query$.subscribe((query) => {
       this.querySnapshot = query;
-      this.api.loadRecipes().subscribe((items) => this.store.dispatch(setRecipesList({ recipes: items })));
+      this.api.loadRecipes().subscribe();
     });
   }
 
   navigatePage(page: number) {
     this.store.dispatch(
       setRecipesQuery({
-        recipesQuery: { ...this.querySnapshot!, page },
+        recipesQuery: { page },
       })
     );
   }

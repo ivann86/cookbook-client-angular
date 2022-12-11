@@ -38,5 +38,6 @@ export interface RecipeQuery {
   country?: string;
   sort?: string;
   order?: number | string;
+  owner?: string;
   tags?: { [key: string]: any };
 }

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable, tap } from 'rxjs';
-import { selectFeatureRecipesQuery, setRecipesQuery, setRecipesStats } from '../state';
+import { selectFeatureRecipesQuery, setRecipesList, setRecipesQuery, setRecipesStats } from '../state';
 import { selectFeatureUser } from '../state/auth.selectors';
 import { Recipe, RecipeQuery } from './interfaces';
 
@@ -56,6 +56,9 @@ export class ApiService {
       map((data) => {
         data.items.forEach((recipe: Recipe) => (recipe.isOwner = recipe.owner?.id === this.userSnapshop?.id));
         return data.items;
+      }),
+      tap((recipes) => {
+        this.store.dispatch(setRecipesList({ recipes: recipes }));
       })
     );
   }

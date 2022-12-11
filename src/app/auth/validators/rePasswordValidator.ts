@@ -7,6 +7,6 @@ export function rePasswordValidator(passwordControl: string, rePasswordControl: 
     if (password === rePassword) {
       return null;
     }
-    return { groupControlsValues: true };
+    return { passwordsMismatch: true };
   };
 }
