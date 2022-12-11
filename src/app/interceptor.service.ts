@@ -1,8 +1,16 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { Injectable, Provider } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { setError } from './state';
 import { selectFeatureToken } from './state/auth.selectors';
 
 const API_URL = environment.API_URL;
@@ -30,7 +38,12 @@ export class InterceptorService implements HttpInterceptor {
       }
       request = req.clone({ url: req.url.replace('/api', API_URL), setHeaders: headers });
     }
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((err) => {
+        this.store.dispatch(setError({ message: err.error?.error?.message || err.message }));
+        return EMPTY;
+      })
+    );
   }
 }
 

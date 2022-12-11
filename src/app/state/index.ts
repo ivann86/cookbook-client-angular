@@ -4,3 +4,6 @@ export * from './auth.selectors';
 export * from './recipe.actions';
 export * from './recipe.reducer';
 export * from './recipe.selectors';
+export * from './error.actions';
+export * from './error.reducer';
+export * from './error.selectors';
