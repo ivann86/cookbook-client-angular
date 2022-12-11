@@ -1,6 +1,6 @@
-# CookbookClient
+# Cookbook
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.8.
+Cookbook е курсов проект за курса Angular - ноември 2022 в СофтУни. Работеща версия на приложението може да бъде достъпена на (https://angular.io/cli)
 
 ## Development server
 
