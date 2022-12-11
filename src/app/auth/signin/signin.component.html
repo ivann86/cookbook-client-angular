@@ -11,7 +11,7 @@
 
   <form #form="ngForm" class="" (ngSubmit)="loginHandler(form)">
     <div class="form-control w-full m-0">
-      <input type="email" name="email" placeholder="E-mail address" #email="ngModel" ngModel required email class="input input-bordered w-full" [ngClass]="email.invalid && email.dirty ? 'input-error' : ''" [ngModelOptions]="{updateOn: 'blur'}" />
+      <input type="email" name="email" placeholder="E-mail address" #email="ngModel" ngModel required email class="input input-bordered w-full" [ngClass]="email.invalid && email.dirty ? 'input-error' : ''" />
       <label class="label">
         <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span>
       </label>
