@@ -11,32 +11,32 @@
 
   <form [formGroup]="form" (ngSubmit)="registerHandler()">
     <div class="form-control w-full">
-      <input type="email" name="email" formControlName="email" placeholder="E-mail адрес" class="input input-bordered w-full" [ngClass]="form.get('email')?.invalid && form.get('email')?.dirty ? 'input-error' : ''" />
+      <input type="email" name="email" formControlName="email" placeholder="E-mail адрес" class="input input-bordered w-full" [ngClass]="form.get('email')?.invalid && form.get('email')?.dirty ? 'input-error' : ''"  />
       <label class="label">
         <span *ngIf="form.get('email')?.dirty && form.get('email')?.invalid" class="label-text-alt text-error">Невалиден e-mail адрес</span>
       </label>
     </div>
     <div class="form-control w-full">
-      <input type="text" name="firstName" formControlName="firstName" placeholder="Име" class="input input-bordered w-full" />
+      <input type="text" name="firstName" formControlName="firstName" placeholder="Име" class="input input-bordered w-full"  />
       <label class="label">
         <!-- <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span> -->
       </label>
     </div>
     <div class="form-control w-full">
-      <input type="text" name="lastName" formControlName="lastName" placeholder="Фамилия" class="input input-bordered w-full" />
+      <input type="text" name="lastName" formControlName="lastName" placeholder="Фамилия" class="input input-bordered w-full"  />
       <label class="label">
         <!-- <span *ngIf="email.dirty && email.invalid" class="label-text-alt text-error">Invalid e-mail</span> -->
       </label>
     </div>
     <ng-container formGroupName="passwords">
       <div class="form-control w-full">
-        <input type="password" name="password" formControlName="password" placeholder="Нова парола" class="input input-bordered w-full" [ngClass]="form.get('passwords')?.get('password')?.invalid && form.get('passwords')?.get('password')?.dirty ? 'input-error' : ''" />
+        <input type="password" name="password" formControlName="password" placeholder="Нова парола" class="input input-bordered w-full" [ngClass]="form.get('passwords')?.get('password')?.invalid && form.get('passwords')?.get('password')?.dirty ? 'input-error' : ''"  />
         <label class="label">
           <span *ngIf="form.get('passwords')?.get('password')?.dirty && form.get('passwords')?.get('password')?.invalid" class="label-text-alt text-error">Паролата трябва да е поне 6 символа дълга</span>
         </label>
       </div>
       <div class="form-control w-full">
-        <input type="password" name="rePassword" formControlName="rePassword" placeholder="Повторете паролата" class="input input-bordered w-full" [ngClass]="form.get('passwords')?.invalid && form.get('passwords')?.get('rePassword')?.dirty ? 'input-error' : ''" />
+        <input type="password" name="rePassword" formControlName="rePassword" placeholder="Повторете паролата" class="input input-bordered w-full" [ngClass]="form.get('passwords')?.invalid && form.get('passwords')?.get('rePassword')?.dirty ? 'input-error' : ''"  />
         <label class="label">
           <span *ngIf="form.get('passwords')?.get('rePassword')?.dirty && form.get('passwords')?.errors?.['passwordsMismatch']" class="label-text-alt text-error">Паролите не съвпадат</span>
         </label>
@@ -47,8 +47,12 @@
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         <span>Отмяна</span>
       </button>
-      <button class="btn btn-success gap-2" [disabled]="form.invalid">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      <button class="btn btn-success gap-2"  [disabled]="form.invalid || (apiStatus$|async)?.status === 'pending'" >
+        <svg *ngIf="(apiStatus$|async)?.status === 'pending'" class="animate-spin h-6 w-6 text-neutral-content" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <svg *ngIf="(apiStatus$|async)?.status !== 'pending'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
         <span>Регистрация</span>
       </button>
     </div>

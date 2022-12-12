@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable, tap } from 'rxjs';
 import { AuthService } from 'src/app/shared/auth.service';
+import { selectApiStatus } from 'src/app/state';
 import { selectFeatureUser } from 'src/app/state/auth.selectors';
 
 @Component({

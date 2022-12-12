@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { tap, timeInterval } from 'rxjs';
-import { resetError, selectError, setError } from './state';
+import { delay, tap, timeInterval } from 'rxjs';
+import { resetApiStatus, resetError, selectApiStatus, selectError, setError } from './state';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +10,14 @@ import { resetError, selectError, setError } from './state';
 })
 export class AppComponent {
   notificationTime: NodeJS.Timeout | undefined = undefined;
-  error$ = this.store.select(selectError).pipe(
-    tap(() => {
+  apiStatus$ = this.store.select(selectApiStatus).pipe(
+    tap((status) => {
+      if (status.status !== 'fail') {
+        return;
+      }
       clearTimeout(this.notificationTime);
       this.notificationTime = setTimeout(() => {
-        this.store.dispatch(resetError());
+        this.store.dispatch(resetApiStatus());
       }, 3000);
     })
   );
@@ -24,6 +27,6 @@ export class AppComponent {
 
   closeNotification() {
     clearTimeout(this.notificationTime);
-    this.store.dispatch(resetError());
+    this.store.dispatch(resetApiStatus());
   }
 }

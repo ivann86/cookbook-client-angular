@@ -4,13 +4,14 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
+  HttpResponse,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { Injectable, Provider } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, EMPTY, map, Observable, throwError } from 'rxjs';
+import { catchError, EMPTY, map, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { setError } from './state';
+import { setApiStatus, setError } from './state';
 import { selectFeatureToken } from './state/auth.selectors';
 
 const API_URL = environment.API_URL;
@@ -19,37 +20,43 @@ const API_URL = environment.API_URL;
   providedIn: 'root',
 })
 export class InterceptorService implements HttpInterceptor {
-  private token$: Observable<string>;
+  private tokenSnapshot = '';
 
   constructor(private store: Store) {
-    this.token$ = store.select(selectFeatureToken);
+    store.select(selectFeatureToken).subscribe((token) => (this.tokenSnapshot = token));
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let request = req;
+
     if (req.url.startsWith('/api')) {
+      this.store.dispatch(setApiStatus({ apiStatus: { status: 'pending', message: '' } }));
       let headers: any;
-      let token: string = '';
-      this.token$.subscribe((val) => {
-        token = val;
-      });
-      if (token) {
-        headers = { Authorization: 'Bearer ' + token };
+      if (this.tokenSnapshot) {
+        headers = { Authorization: 'Bearer ' + this.tokenSnapshot };
       }
       request = req.clone({ url: req.url.replace('/api', API_URL), setHeaders: headers });
     }
 
     return next.handle(request).pipe(
-      // Handle expired token
-      catchError((err) => {
-        if (req.url.endsWith('/profile') && err.status === 401) {
-          return EMPTY;
+      tap((res) => {
+        if (req.url.startsWith('/api') && (res as any).ok) {
+          this.store.dispatch(setApiStatus({ apiStatus: { status: 'ready', message: '' } }));
         }
-        return throwError(() => err);
       }),
-      // Dispatch error message to state
       catchError((err) => {
-        this.store.dispatch(setError({ message: err.error?.error?.message || err.message }));
+        if (!req.url.startsWith('/api')) {
+          return throwError(() => err);
+        }
+
+        // Handle expired token error
+        if (req.url.endsWith('/profile') && err.status === 401) {
+          this.store.dispatch(setApiStatus({ apiStatus: { status: 'ready', message: '' } }));
+        } else {
+          const message = err.error?.error?.message || err.message;
+          this.store.dispatch(setApiStatus({ apiStatus: { status: 'fail', message } }));
+        }
+
         return EMPTY;
       })
     );

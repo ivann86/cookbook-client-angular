@@ -10,6 +10,7 @@ import { RecipesModule } from './recipes/recipes.module';
 import { InterceptorProvider } from './interceptor.service';
 import { StoreModule } from '@ngrx/store';
 import {
+  apiStatusReducer,
   errorReducer,
   recipesListReduces,
   recipesQueryReducer,
@@ -31,6 +32,7 @@ const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pi
     RecipesModule,
     HttpClientModule,
     StoreModule.forRoot({
+      apiStatus: apiStatusReducer,
       token: tokenReducer,
       user: userReducer,
       recipesQuery: recipesQueryReducer,

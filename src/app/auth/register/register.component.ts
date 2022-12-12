@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { tap } from 'rxjs';
 import { AuthService } from 'src/app/shared/auth.service';
+import { selectApiStatus } from 'src/app/state';
 import { rePasswordValidator } from '../validators/rePasswordValidator';
 
 @Component({
@@ -22,8 +25,16 @@ export class RegisterComponent implements OnInit {
       { validators: [rePasswordValidator('password', 'rePassword')] }
     ),
   });
+  apiStatus$ = this.store
+    .select(selectApiStatus)
+    .pipe(tap((status) => (status.status === 'pending' ? this.form.disable() : this.form.enable())));
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private store: Store
+  ) {}
 
   ngOnInit(): void {}
 
