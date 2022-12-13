@@ -54,8 +54,8 @@ export class InterceptorService implements HttpInterceptor {
           this.store.dispatch(setApiStatus({ apiStatus: { status: 'ready', message: '' } }));
         } else {
           let message = err.error?.error?.message || err.message;
-          if (err.status === 0) {
-            message = 'There was a problem connecting to Cookbook servers';
+          if (err.status === 0 || err.status >= 500) {
+            message = 'There was a problem talking to Cookbook servers';
           }
           this.store.dispatch(setApiStatus({ apiStatus: { status: 'fail', message } }));
         }
