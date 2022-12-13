@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable, tap } from 'rxjs';
-import { selectFeatureRecipesQuery, setRecipesList, setRecipesQuery, setRecipesStats } from '../state';
+import { selectFeatureRecipesQuery, setRecipesQuery, setRecipesStats } from '../state';
 import { selectFeatureUser } from '../state/auth.selectors';
 import { Recipe, RecipeQuery } from './interfaces';
 
@@ -38,29 +38,7 @@ export class ApiService {
     const params = Object.entries(Object.assign({}, this.recipeQuerySnapshot!, { tags })).filter(
       ([key, value]) => !!value
     );
-    return this.http.get<any>(`/api/recipes`, { params: Object.fromEntries(params) }).pipe(
-      map((res) => res.data),
-      tap((data) =>
-        this.store.dispatch(
-          setRecipesStats({
-            recipesStats: {
-              total: data.total,
-              count: data.count,
-              page: data.page,
-              pageCount: Math.ceil(data.total / data.limit),
-              limit: data.limit,
-            },
-          })
-        )
-      ),
-      map((data) => {
-        data.items.forEach((recipe: Recipe) => (recipe.isOwner = recipe.owner?.id === this.userSnapshop?.id));
-        return data.items;
-      }),
-      tap((recipes) => {
-        this.store.dispatch(setRecipesList({ recipes: recipes }));
-      })
-    );
+    return this.http.get<any>(`/api/recipes`, { params: Object.fromEntries(params) });
   }
 
   public loadRecipe(id: string) {

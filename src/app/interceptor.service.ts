@@ -53,7 +53,10 @@ export class InterceptorService implements HttpInterceptor {
         if (req.url.endsWith('/profile') && err.status === 401) {
           this.store.dispatch(setApiStatus({ apiStatus: { status: 'ready', message: '' } }));
         } else {
-          const message = err.error?.error?.message || err.message;
+          let message = err.error?.error?.message || err.message;
+          if (err.status === 0) {
+            message = 'There was a problem connecting to Cookbook servers';
+          }
           this.store.dispatch(setApiStatus({ apiStatus: { status: 'fail', message } }));
         }
 

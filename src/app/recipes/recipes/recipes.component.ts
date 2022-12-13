@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { tap } from 'rxjs';
 import { ApiService } from 'src/app/shared/api.service';
 import { RecipeQuery } from 'src/app/shared/interfaces';
 import {
   selectApiStatus,
-  selectFeatureRecipesList,
   selectFeatureRecipesQuery,
   selectFeatureRecipesStats,
+  selectRecipesList,
   setRecipesQuery,
 } from 'src/app/state';
 
@@ -18,13 +17,16 @@ import {
   styleUrls: ['./recipes.component.css'],
 })
 export class RecipesComponent implements OnInit {
+  recipes$ = this.store.select(selectRecipesList);
+  query = this.store.select(selectFeatureRecipesQuery).subscribe((query) => {
+    this.querySnapshot = query;
+  });
   querySnapshot: RecipeQuery | null = null;
-  recipes$ = this.store.select(selectFeatureRecipesList);
-  query$ = this.store.select(selectFeatureRecipesQuery);
   total = 0;
   limit: number = 20;
   currentPage: number = 0;
   pages: number[] = [];
+  apiStatus$ = this.store.select(selectApiStatus);
 
   constructor(private api: ApiService, private store: Store, private route: ActivatedRoute) {
     this.store.select(selectFeatureRecipesStats).subscribe((stats) => {
@@ -41,10 +43,6 @@ export class RecipesComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(setRecipesQuery({ recipesQuery: this.route.snapshot.data['query'] }));
-    this.query$.subscribe((query) => {
-      this.querySnapshot = query;
-      this.api.loadRecipes().subscribe();
-    });
   }
 
   navigatePage(page: number) {

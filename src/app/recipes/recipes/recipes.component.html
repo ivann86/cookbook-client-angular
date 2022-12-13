@@ -1,7 +1,7 @@
 <div class="flex min-h-screen">
   <div class="hidden bg-base-200 md:block  sm:col-span-2">
     <ul class="my-4 menu menu-compact w-52 p-2 rounded-box">
-      <ng-container *ngFor="let category of ((query$ | async))!.tags | keyvalue">
+      <ng-container *ngFor="let category of querySnapshot?.tags | keyvalue">
         <li></li>
         <li class="menu-title">
           <span>{{category.key}}</span>
@@ -20,11 +20,13 @@
 
   <div class="my-8 flex-grow">
 
-    <div class="mb-6 mx-auto w-full sm:max-w-fit sm:px-4 lg:px-6 sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
+    <div *ngIf="(apiStatus$|async)?.status === 'pending'" class="mx-auto  border-4 border-base-300 border-t-primary border-r-primary w-12 h-12 rounded-full animate-spin"></div>
+
+    <div *ngIf="(apiStatus$|async)?.status === 'ready'" class="mb-6 mx-auto w-full sm:max-w-fit sm:px-4 lg:px-6 sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
       <app-recipe-card *ngFor="let recipe of recipes$ | async" [recipe]="recipe"></app-recipe-card>
     </div>
 
-    <div *ngIf="pages" class="btn-group flex justify-center">
+    <div *ngIf="pages.length > 1 && (apiStatus$|async)?.status === 'ready'" class="btn-group flex justify-center">
       <button *ngFor="let page of pages; index as i" class="btn btn-md" [ngClass]="currentPage === page ? 'btn-active' : ''" (click)="this.navigatePage(page)">{{page}}</button>
     </div>
 
