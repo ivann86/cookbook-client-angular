@@ -11,7 +11,8 @@ import { InterceptorProvider } from './interceptor.service';
 import { StoreModule } from '@ngrx/store';
 import {
   apiStatusReducer,
-  errorReducer,
+  recipeQueryReducer,
+  recipeReducer,
   recipesListReduces,
   recipesQueryReducer,
   recipesStatsReducer,
@@ -23,6 +24,7 @@ import { catchError, EMPTY, Observable } from 'rxjs';
 import { EffectsModule } from '@ngrx/effects';
 import { RecipeEffectsService } from './state/recipe.effects.service';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pipe(catchError(() => EMPTY));
 
@@ -35,13 +37,15 @@ const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pi
     RecipesModule,
     HttpClientModule,
     StoreModule.forRoot({
+      router: routerReducer,
       apiStatus: apiStatusReducer,
       token: tokenReducer,
       user: userReducer,
       recipesQuery: recipesQueryReducer,
       recipesStats: recipesStatsReducer,
       recipes: recipesListReduces,
-      error: errorReducer,
+      recipeQuery: recipeQueryReducer,
+      recipe: recipeReducer,
     }),
     AppRoutingModule,
     EffectsModule.forRoot([RecipeEffectsService]),
@@ -52,6 +56,7 @@ const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pi
       trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [
     {

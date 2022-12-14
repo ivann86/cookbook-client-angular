@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { selectFeatureUser } from 'src/app/state/auth.selectors';
+import { selectFeatureUser } from 'src/app/state';
 
 @Injectable({
   providedIn: 'root',

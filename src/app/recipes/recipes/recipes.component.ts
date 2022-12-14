@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { ApiService } from 'src/app/shared/api.service';
 import { RecipeQuery } from 'src/app/shared/interfaces';
 import {
+  resetRecipesList,
   selectApiStatus,
   selectFeatureRecipesQuery,
   selectFeatureRecipesStats,

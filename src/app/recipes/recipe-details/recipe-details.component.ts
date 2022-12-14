@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { ApiService } from 'src/app/shared/api.service';
-import { Recipe } from 'src/app/shared/interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectApiStatus, selectFeatureRecipe, setRecipeQuery } from 'src/app/state';
 
 @Component({
   selector: 'app-recipe-details',
@@ -9,12 +9,13 @@ import { Recipe } from 'src/app/shared/interfaces';
   styleUrls: ['./recipe-details.component.css'],
 })
 export class RecipeDetailsComponent implements OnInit {
-  recipe: Recipe | null = null;
+  recipe$ = this.store.select(selectFeatureRecipe);
+  apiStatus$ = this.store.select(selectApiStatus);
 
-  constructor(private api: ApiService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private store: Store, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.recipe = this.route.snapshot.data['recipe'];
+    this.store.dispatch(setRecipeQuery({ slug: this.route.snapshot.params['id'] }));
   }
 
   deleteHandler() {

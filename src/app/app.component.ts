@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { delay, tap, timeInterval } from 'rxjs';
-import { resetApiStatus, resetError, selectApiStatus, selectError, setError } from './state';
+import { tap } from 'rxjs';
+import { resetApiStatus, selectApiStatus } from './state';
 
 @Component({
   selector: 'app-root',

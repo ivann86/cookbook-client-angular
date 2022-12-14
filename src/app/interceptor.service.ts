@@ -1,18 +1,10 @@
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse,
-  HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injectable, Provider } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, EMPTY, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { setApiStatus, setError } from './state';
-import { selectFeatureToken } from './state/auth.selectors';
+import { setApiStatus } from './state';
+import { selectFeatureToken } from './state/';
 
 const API_URL = environment.API_URL;
 

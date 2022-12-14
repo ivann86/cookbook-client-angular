@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^15.0.2",
     "@angular/router": "^15.0.2",
     "@ngrx/effects": "^15.0.0",
+    "@ngrx/router-store": "^15.0.0",
     "@ngrx/store": "^15.0.0",
     "@ngrx/store-devtools": "^15.0.0",
     "daisyui": "^2.42.1",
