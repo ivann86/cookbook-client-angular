@@ -1,0 +1,3 @@
+<div class="btn-group flex justify-center">
+  <button *ngFor="let page of pages; index as i" class="btn btn-md" [ngClass]="selected === page ? 'btn-active' : ''" (click)="page !== selected ? this.change.emit(page) : null">{{page}}</button>
+</div>

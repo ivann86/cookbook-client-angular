@@ -1,10 +1,8 @@
-import { Component, OnInit, ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ApiService } from 'src/app/shared/api.service';
 import { RecipeQuery } from 'src/app/shared/interfaces';
 import {
-  resetRecipesList,
   selectApiStatus,
   selectFeatureRecipesQuery,
   selectFeatureRecipesStats,
@@ -18,29 +16,15 @@ import {
   styleUrls: ['./recipes.component.css'],
 })
 export class RecipesComponent implements OnInit {
+  apiStatus$ = this.store.select(selectApiStatus);
   recipes$ = this.store.select(selectRecipesList);
+  recipesStats$ = this.store.select(selectFeatureRecipesStats);
+  querySnapshot: RecipeQuery | null = null;
   query = this.store.select(selectFeatureRecipesQuery).subscribe((query) => {
     this.querySnapshot = query;
   });
-  querySnapshot: RecipeQuery | null = null;
-  total = 0;
-  limit: number = 20;
-  currentPage: number = 0;
-  pages: number[] = [];
-  apiStatus$ = this.store.select(selectApiStatus);
 
-  constructor(private api: ApiService, private store: Store, private route: ActivatedRoute) {
-    this.store.select(selectFeatureRecipesStats).subscribe((stats) => {
-      this.total = stats.total;
-      let firstPage = stats.page - 3;
-      if (firstPage < 1) firstPage = 1;
-      const length = stats.pageCount > 7 ? 7 : stats.pageCount;
-      if (length + firstPage - 1 > stats.pageCount) firstPage = stats.pageCount - length + 1;
-      this.pages = Array.from({ length }, (_, i) => i + firstPage);
-      this.currentPage = stats.page;
-      this.limit = stats.limit;
-    });
-  }
+  constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.store.dispatch(setRecipesQuery({ recipesQuery: this.route.snapshot.data['query'] }));
@@ -49,7 +33,7 @@ export class RecipesComponent implements OnInit {
   navigatePage(page: number) {
     this.store.dispatch(
       setRecipesQuery({
-        recipesQuery: { page },
+        recipesQuery: { ...this.querySnapshot, page },
       })
     );
   }
@@ -63,6 +47,6 @@ export class RecipesComponent implements OnInit {
       return;
     }
     tags[category][tag as string] = check;
-    this.store.dispatch(setRecipesQuery({ recipesQuery: { ...this.querySnapshot, tags } }));
+    this.store.dispatch(setRecipesQuery({ recipesQuery: { ...this.querySnapshot, tags, page: 1 } }));
   }
 }

@@ -73,8 +73,3 @@ export const selectRecipesList = createSelector(
   selectFeatureRecipesList,
   (user: User, recipes: Recipe[]) => recipes.map((recipe) => ({ ...recipe, isOwner: recipe.owner?.id === user?.id }))
 );
-export const selectOwnRecipesQuery = createSelector(
-  selectFeatureUser,
-  selectFeatureRecipesQuery,
-  (user: User, query: RecipeQuery) => ({ ...query, owner: user.id })
-);

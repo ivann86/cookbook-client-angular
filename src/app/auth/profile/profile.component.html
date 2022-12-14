@@ -21,5 +21,11 @@
   <ng-container *ngIf="(apiStatus$|async)?.status !== 'pending'">
     <app-recipe-card  *ngFor="let recipe of (recipes$ | async)" [recipe]="recipe"></app-recipe-card>
   </ng-container>
+
 </div>
+
+<div *ngIf="(recipesStats$ | async) as stats" class="mb-12 mx-auto">
+  <app-pagination [btnCount]="7" [count]="stats.total / stats.limit" [selected]="stats.page" (change)="navigatePage($event)"></app-pagination>
+</div>
+
 
