@@ -1,3 +1,5 @@
 <div class="my-12">
-  <app-recipe-wizard title="Edit recipe" [imageRequired]="false" [recipe]="recipe" (finish)="onWizardFinish($event)"></app-recipe-wizard>
+  <ng-container *ngIf="(apiStatus$|async)?.status === 'ready'">
+    <app-recipe-wizard title="Edit recipe" [imageRequired]="false" [recipe]="recipe$ | async" (finish)="onWizardFinish($event)"></app-recipe-wizard>
+  </ng-container>
 </div>

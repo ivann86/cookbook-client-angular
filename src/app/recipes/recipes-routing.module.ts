@@ -5,7 +5,6 @@ import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { RecipesComponent } from './recipes/recipes.component';
-import { RecipeResolverService } from './resolvers/recipe-resolver.service';
 import { RecipesQueryResolverService } from './resolvers/recipes-query-resolver.service';
 
 const routes: Routes = [
@@ -24,8 +23,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'edit-recipe/:id',
-    resolve: { recipe: RecipeResolverService },
+    path: 'edit-recipe/:slug',
     component: EditRecipeComponent,
     canActivate: [AuthGuardService],
     data: {
@@ -34,8 +32,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'recipes/:id',
-    resolve: { recipe: RecipeResolverService },
+    path: 'recipes/:slug',
     component: RecipeDetailsComponent,
   },
 ];

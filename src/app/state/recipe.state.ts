@@ -1,6 +1,6 @@
 import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
 import { Recipe, RecipeQuery, RecipeStats, User } from '../shared/interfaces';
-import { selectFeatureUser, userReducer } from './auth.state';
+import { selectFeatureUser } from './auth.state';
 
 // ACTIONS
 export const setRecipesQuery = createAction('[Recipes] Set recipes query', props<{ recipesQuery: RecipeQuery }>());
@@ -11,6 +11,11 @@ export const resetRecipesList = createAction('[Recipes] Reset recipes list');
 export const setRecipeQuery = createAction('[Recipe] Set recipe query', props<{ slug: string }>());
 export const setSelectedRecipe = createAction('[Recipe] Set selected recipe', props<{ recipe: any }>());
 export const deleteRecipe = createAction('[Owner actions] Delete recipe', props<{ slug: string }>());
+export const addRecipe = createAction('[Add page] Add a recipe', props<{ recipe: Recipe; image?: File }>());
+export const editRecipe = createAction(
+  '[Edit page] Edit a recipe',
+  props<{ slug: string; recipe: Recipe; image?: File }>()
+);
 
 // REDUCERS
 const tags = {
@@ -58,7 +63,11 @@ export const recipeReducer = createReducer(
 export const selectFeatureRecipesQuery = createFeatureSelector<RecipeQuery>('recipesQuery');
 export const selectFeatureRecipesStats = createFeatureSelector<RecipeStats>('recipesStats');
 export const selectFeatureRecipesList = createFeatureSelector<Recipe[]>('recipes');
-export const selectFeatureRecipe = createFeatureSelector<any>('recipe');
+export const selectFeatureRecipe = createFeatureSelector<Recipe>('recipe');
+export const selectRecipe = createSelector(selectFeatureUser, selectFeatureRecipe, (user: User, recipe: Recipe) => ({
+  ...recipe,
+  isOwner: recipe.owner?.id === user?.id,
+}));
 export const selectRecipesList = createSelector(
   selectFeatureUser,
   selectFeatureRecipesList,

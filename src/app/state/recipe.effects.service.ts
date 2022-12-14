@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { mergeMap, map, tap, catchError, EMPTY, withLatestFrom } from 'rxjs';
 import { ApiService } from '../shared/api.service';
-import { resetRecipesList, setRecipesList, setRecipesStats, setSelectedRecipe } from './recipe.state';
+import { setRecipesStats } from './recipe.state';
 import { selectFeatureRecipesQuery } from './recipe.state';
 
 @Injectable({
@@ -32,7 +33,7 @@ export class RecipeEffectsService {
       ofType('[Recipe] Set recipe query'),
       mergeMap((query: any) =>
         this.api.loadRecipe(query.slug).pipe(
-          map((recipe) => ({ type: '[Recipe] Set selected recipe', recipe })),
+          map((res) => ({ type: '[Recipe] Set selected recipe', recipe: res.data.recipe })),
           catchError(() => EMPTY)
         )
       )
@@ -52,5 +53,33 @@ export class RecipeEffectsService {
     )
   );
 
-  constructor(private actions$: Actions, private api: ApiService, private store: Store) {}
+  addRecipe$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[Add page] Add a recipe'),
+      mergeMap(({ recipe, image }) =>
+        this.api.addRecipe(recipe, image).pipe(
+          map((res) => res.data.recipe),
+          tap((recipe) => this.router.navigate(['recipes', recipe.slug])),
+          map(() => ({ type: '[Effect] Add recipe done' })),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  editRecipe$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[Edit page] Edit a recipe'),
+      mergeMap(({ slug, recipe, image }) =>
+        this.api.patchRecipe(slug, recipe, image).pipe(
+          map((res) => res.data.recipe),
+          tap((recipe) => this.router.navigate(['recipes', recipe.slug])),
+          map(() => ({ type: '[Effect] Edit recipe done' })),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
+  constructor(private actions$: Actions, private api: ApiService, private store: Store, private router: Router) {}
 }

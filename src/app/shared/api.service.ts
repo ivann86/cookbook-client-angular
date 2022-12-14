@@ -1,20 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
-import { selectFeatureUser } from '../state/';
+import { map } from 'rxjs';
 import { Recipe, RecipeQuery } from './interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  user$: Observable<any> = this.store.select(selectFeatureUser);
-  userSnapshop: any = null;
-
-  constructor(private http: HttpClient, private store: Store) {
-    this.user$.subscribe((user) => (this.userSnapshop = user));
-  }
+  constructor(private http: HttpClient, private store: Store) {}
 
   public loadSample(tags: string[], limit: number) {
     return this.http
@@ -23,7 +17,6 @@ export class ApiService {
   }
 
   public loadRecipes(query: RecipeQuery) {
-    console.log(query);
     const tags = Object.values(query.tags || {})
       .map((obj) => Object.entries(obj).map(([key, value]) => (value ? key : null)))
       .flat()
@@ -35,10 +28,7 @@ export class ApiService {
   }
 
   public loadRecipe(id: string) {
-    return this.http.get<any>(`/api/recipes/${id}`).pipe(
-      map((res) => res.data.recipe),
-      map((recipe) => ({ ...recipe, isOwner: recipe.owner.id === this.userSnapshop?.id }))
-    );
+    return this.http.get<any>(`/api/recipes/${id}`);
   }
 
   public addRecipe(recipe: Recipe, image: File | null) {

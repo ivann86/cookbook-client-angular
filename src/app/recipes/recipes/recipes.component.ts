@@ -63,6 +63,6 @@ export class RecipesComponent implements OnInit {
       return;
     }
     tags[category][tag as string] = check;
-    this.store.dispatch(setRecipesQuery({ recipesQuery: { tags } }));
+    this.store.dispatch(setRecipesQuery({ recipesQuery: { ...this.querySnapshot, tags } }));
   }
 }

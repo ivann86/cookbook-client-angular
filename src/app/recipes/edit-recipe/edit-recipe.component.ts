@@ -1,23 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from 'src/app/shared/api.service';
+import { Store } from '@ngrx/store';
+import { tap } from 'rxjs';
 import { Recipe } from 'src/app/shared/interfaces';
+import { editRecipe, selectApiStatus, selectRecipe, setRecipeQuery } from 'src/app/state';
 
 @Component({
   selector: 'app-edit-recipe',
   templateUrl: './edit-recipe.component.html',
   styleUrls: ['./edit-recipe.component.css'],
 })
-export class EditRecipeComponent {
-  recipe: Recipe;
+export class EditRecipeComponent implements OnInit {
+  slug: string = '';
+  apiStatus$ = this.store.select(selectApiStatus);
+  recipe$ = this.store.select(selectRecipe).pipe(
+    tap((recipe: Recipe) => {
+      this.slug = recipe?.slug;
+    })
+  );
 
-  constructor(private api: ApiService, private route: ActivatedRoute, private router: Router) {
-    this.recipe = route.snapshot.data['recipe'];
+  constructor(private store: Store, private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(setRecipeQuery({ slug: this.route.snapshot.params['slug'] }));
   }
 
   onWizardFinish({ recipe, image }: { recipe: Recipe; image: File }) {
-    this.api
-      .patchRecipe(this.recipe.slug, recipe, image)
-      .subscribe((response) => this.router.navigate([`/recipes/${response.data.recipe.slug}`]));
+    this.store.dispatch(editRecipe({ slug: this.slug, recipe, image }));
   }
 }
