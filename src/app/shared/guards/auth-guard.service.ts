@@ -1,36 +1,25 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
-import { selectFeatureUser } from 'src/app/state';
+import { filter, map, Observable } from 'rxjs';
+import { selectAuthStatus } from 'src/app/state';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuardService implements CanActivate {
-  user$ = this.store.select(selectFeatureUser);
+  authStatus$ = this.store.select(selectAuthStatus);
 
   constructor(private store: Store, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
-    | boolean
-    | UrlTree
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree> {
-    return this.user$.pipe(
-      map((user) => {
-        if (route.data?.['loggedInCanActivate'] === !!user) {
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
+    return this.authStatus$.pipe(
+      filter((status) => status !== 'pending'),
+      map((status) => {
+        if (route.data?.['loggedInCanActivate'] === (status === 'authenticated')) {
           return true;
         }
+
         return this.router.parseUrl(route.data['redirect']);
       })
     );

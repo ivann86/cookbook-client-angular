@@ -52,7 +52,7 @@ export class InterceptorService implements HttpInterceptor {
           this.store.dispatch(setApiStatus({ apiStatus: { status: 'fail', message } }));
         }
 
-        return EMPTY;
+        return throwError(() => err);
       })
     );
   }

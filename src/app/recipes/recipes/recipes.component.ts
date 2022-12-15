@@ -24,9 +24,18 @@ export class RecipesComponent implements OnInit {
     this.querySnapshot = query;
   });
 
+  tags: [string, any[]][] = [
+    ['Време', ['Закуска', 'Обяд', 'Вечеря']],
+    ['Меню', ['Предястие', 'Основно', 'Десерт']],
+    ['Категория', ['Сосове', 'Гарнитури', 'Супи', 'Салати', 'Печива', 'Пица']],
+  ];
+  selectedTags: string[] = [];
+
   constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.selectedTags = this.route.snapshot.data['query'].tags.split(',');
+    console.log(this.selectedTags);
     this.store.dispatch(setRecipesQuery({ recipesQuery: this.route.snapshot.data['query'] }));
   }
 
@@ -38,15 +47,16 @@ export class RecipesComponent implements OnInit {
     );
   }
 
-  switchTag(category: string, tag: string | unknown, check: boolean) {
-    const tags: any = {};
-    for (let category in this.querySnapshot?.tags) {
-      tags[category] = Object.assign({}, this.querySnapshot?.tags[category]);
+  switchTag(tag: string, check: boolean) {
+    if (check) {
+      this.selectedTags.push(tag);
+    } else if (this.selectedTags.includes(tag)) {
+      this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
     }
-    if (!tags[category]) {
-      return;
-    }
-    tags[category][tag as string] = check;
-    this.store.dispatch(setRecipesQuery({ recipesQuery: { ...this.querySnapshot, tags, page: 1 } }));
+    this.store.dispatch(
+      setRecipesQuery({
+        recipesQuery: { ...this.querySnapshot, tags: this.selectedTags.join(',').toLowerCase(), page: 1 },
+      })
+    );
   }
 }

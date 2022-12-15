@@ -4,8 +4,8 @@
   <div class="col-span-2 lg:col-span-3 xl:col-span-4 relative">
     <svg class="px-4 bg-base-100 border-2 border-primary rounded-full w-48 h-48 absolute -translate-y-1/2 " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
     <div class="left-56 top-4 absolute">
-      <h1 class="text-3xl font-bold text-primary">{{(user$|async).firstName}} {{(user$|async).lastName}}</h1>
-      <span class="text-secondary">{{(user$|async).email}}</span>
+      <h1 class="text-3xl font-bold text-primary">{{(user$|async)?.firstName}} {{(user$|async)?.lastName}}</h1>
+      <span class="text-secondary">{{(user$|async)?.email}}</span>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
 
 </div>
 
-<div *ngIf="(recipesStats$ | async) as stats" class="mb-12 mx-auto">
+<div *ngIf="(apiStatus$|async)?.status === 'ready' && (recipesStats$ | async) as stats" class="mb-12 mx-auto">
   <app-pagination [btnCount]="7" [count]="stats.total / stats.limit" [selected]="stats.page" (change)="navigatePage($event)"></app-pagination>
 </div>
 

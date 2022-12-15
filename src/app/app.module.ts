@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { InterceptorProvider } from './interceptor.service';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import {
   apiStatusReducer,
   recipeQueryReducer,
@@ -20,17 +20,23 @@ import {
   tokenReducer,
   userReducer,
 } from './state';
-import { AuthService } from './shared/auth.service';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { filter } from 'rxjs';
 import { EffectsModule } from '@ngrx/effects';
 import { RecipeEffectsService } from './state/recipe.effects.service';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
-import { authStatusReducer } from './state/auth.state';
+import { authenticate, authStatusReducer, selectAuthStatus } from './state/auth.state';
 import { AuthEffectsService } from './state/auth.effects.service';
 
-const appInit = (auth: AuthService) => (): Observable<any> =>
-  auth.loadUser().pipe(catchError(() => EMPTY));
+const appInit = (store: Store) => (): Promise<any> => {
+  store.dispatch(authenticate());
+  return new Promise((resolve) => {
+    store
+      .select(selectAuthStatus)
+      .pipe(filter((status) => status !== 'pending'))
+      .subscribe(() => resolve(true));
+  });
+};
 
 @NgModule({
   declarations: [AppComponent],
@@ -69,7 +75,7 @@ const appInit = (auth: AuthService) => (): Observable<any> =>
       provide: APP_INITIALIZER,
       useFactory: appInit,
       multi: true,
-      deps: [AuthService],
+      deps: [Store],
     },
     InterceptorProvider,
   ],

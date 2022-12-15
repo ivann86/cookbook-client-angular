@@ -13,13 +13,7 @@ export class ApiService {
   }
 
   public loadRecipes(query: RecipeQuery) {
-    const tags = Object.values(query.tags || {})
-      .map((obj) => Object.entries(obj).map(([key, value]) => (value ? key : null)))
-      .flat()
-      .filter((tag) => !!tag)
-      .join(',')
-      .toLowerCase();
-    const params = Object.entries(Object.assign({}, query, { tags })).filter(([key, value]) => !!value);
+    const params = Object.entries(query).filter(([key, value]) => !!value);
     return this.http.get<any>(`/api/recipes`, { params: Object.fromEntries(params) });
   }
 

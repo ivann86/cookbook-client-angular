@@ -2,16 +2,16 @@
 
   <div class="hidden bg-base-200 md:block  sm:col-span-2">
     <ul class="my-4 menu menu-compact w-52 p-2 rounded-box">
-      <ng-container *ngFor="let category of querySnapshot?.tags | keyvalue">
+      <ng-container *ngFor="let category of tags">
         <li></li>
         <li class="menu-title">
-          <span>{{category.key}}</span>
+          <span>{{category[0]}}</span>
         </li>
-        <li *ngFor="let tag of category.value | keyvalue">
+        <li *ngFor="let item of category[1]">
           <div class="form-control">
             <label class="label cursor-pointer w-full gap-2 p-0">
-              <input type="checkbox" #check [checked]="tag.value" class="checkbox checkbox-xs rounded-sm checkbox-primary" (change)="switchTag(category.key, tag.key, check.checked)" />
-              <span class="label-text flow-grow w-full">{{tag.key}}</span> 
+              <input type="checkbox" #check [checked]="selectedTags.includes(item.toLowerCase())" class="checkbox checkbox-xs rounded-sm checkbox-primary" (change)="switchTag(item.toLowerCase(), check.checked)" />
+              <span class="label-text flow-grow w-full">{{item}}</span> 
             </label>
           </div>
         </li>
@@ -27,7 +27,7 @@
       <app-recipe-card *ngFor="let recipe of recipes$ | async" [recipe]="recipe"></app-recipe-card>
     </div>
 
-    <ng-container *ngIf="(recipesStats$ | async) as stats">
+    <ng-container *ngIf="(apiStatus$|async)?.status === 'ready' && (recipesStats$ | async) as stats">
       <app-pagination [count]="stats.total / stats.limit" [selected]="stats.page" (change)="navigatePage($event)"></app-pagination>
     </ng-container>
 

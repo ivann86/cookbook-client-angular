@@ -9,7 +9,7 @@ export const resetApiStatus = createAction('[API] Reset status');
 const initialApiStatus: ApiStatus = { status: 'idle', message: '' };
 export const apiStatusReducer = createReducer(
   initialApiStatus,
-  on(setApiStatus, (state, { apiStatus }) => ({ ...apiStatus })),
+  on(setApiStatus, (_, { apiStatus }) => ({ ...apiStatus })),
   on(resetApiStatus, () => initialApiStatus)
 );
 

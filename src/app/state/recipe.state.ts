@@ -27,11 +27,6 @@ export const editRecipe = createAction(
 );
 
 // REDUCERS
-const tags = {
-  For: { Закуска: false, Обяд: false, Вечеря: false },
-  Meal: { Предястие: false, Основно: false, Десерт: false },
-  Category: { Сосове: false, Гарнитури: false, Супи: false, Салати: false, Печива: false },
-};
 export const initalRecipesQueryState: RecipeQuery = {
   page: 1,
   limit: 20,
@@ -39,7 +34,7 @@ export const initalRecipesQueryState: RecipeQuery = {
   sort: 'createdAt',
   order: -1,
   owner: '',
-  tags,
+  tags: '',
 };
 
 export const initialRecipesStatsState: RecipeStats = { total: 0, count: 0, limit: 20, page: 0, pageCount: 0 };

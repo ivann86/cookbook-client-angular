@@ -39,7 +39,7 @@ export interface RecipeQuery {
   sort?: string;
   order?: number | string;
   owner?: string;
-  tags?: { [key: string]: any };
+  tags?: string;
 }
 
 export interface RecipeSample {

@@ -18,7 +18,7 @@ export class AppComponent {
       clearTimeout(this.notificationTime);
       this.notificationTime = setTimeout(() => {
         this.store.dispatch(resetApiStatus());
-      }, 3000);
+      }, 4000);
     })
   );
   title = 'cookbook-client';

@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
-import { AuthService } from 'src/app/shared/auth.service';
-import { selectApiStatus } from 'src/app/state';
+import { registerUser, selectApiStatus } from 'src/app/state';
 import { rePasswordValidator } from '../validators/rePasswordValidator';
 
 @Component({
@@ -12,7 +10,7 @@ import { rePasswordValidator } from '../validators/rePasswordValidator';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     firstName: [''],
@@ -25,18 +23,12 @@ export class RegisterComponent implements OnInit {
       { validators: [rePasswordValidator('password', 'rePassword')] }
     ),
   });
+
   apiStatus$ = this.store
     .select(selectApiStatus)
     .pipe(tap((status) => (status.status === 'pending' ? this.form.disable() : this.form.enable())));
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private store: Store
-  ) {}
-
-  ngOnInit(): void {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   registerHandler() {
     if (this.form.invalid) {
@@ -44,11 +36,13 @@ export class RegisterComponent implements OnInit {
     }
 
     const { email, firstName, lastName, passwords: { password } = {} } = this.form.value;
-    this.authService.register(email!, firstName!, lastName!, password!).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: console.error,
-    });
+    this.store.dispatch(
+      registerUser({
+        email: email || '',
+        firstName: firstName || '',
+        lastName: lastName || '',
+        password: password || '',
+      })
+    );
   }
 }
