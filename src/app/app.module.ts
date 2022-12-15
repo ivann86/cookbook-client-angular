@@ -26,8 +26,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { RecipeEffectsService } from './state/recipe.effects.service';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { authStatusReducer } from './state/auth.state';
+import { AuthEffectsService } from './state/auth.effects.service';
 
-const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pipe(catchError(() => EMPTY));
+const appInit = (auth: AuthService) => (): Observable<any> =>
+  auth.loadUser().pipe(catchError(() => EMPTY));
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +43,7 @@ const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pi
     StoreModule.forRoot({
       router: routerReducer,
       apiStatus: apiStatusReducer,
+      authStatus: authStatusReducer,
       token: tokenReducer,
       user: userReducer,
       samples: recipesSampleReducer,
@@ -50,7 +54,7 @@ const appInit = (auth: AuthService) => (): Observable<any> => auth.loadUser().pi
       recipe: recipeReducer,
     }),
     AppRoutingModule,
-    EffectsModule.forRoot([RecipeEffectsService]),
+    EffectsModule.forRoot([AuthEffectsService, RecipeEffectsService]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

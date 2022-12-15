@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { selectFeatureUser } from 'src/app/state';
@@ -8,16 +14,18 @@ import { selectFeatureUser } from 'src/app/state';
   providedIn: 'root',
 })
 export class AuthGuardService implements CanActivate {
-  user$: Observable<any>;
+  user$ = this.store.select(selectFeatureUser);
 
-  constructor(private store: Store, private router: Router) {
-    this.user$ = this.store.select(selectFeatureUser);
-  }
+  constructor(private store: Store, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  ):
+    | boolean
+    | UrlTree
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree> {
     return this.user$.pipe(
       map((user) => {
         if (route.data?.['loggedInCanActivate'] === !!user) {

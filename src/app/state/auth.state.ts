@@ -1,14 +1,36 @@
-import { createAction, createFeatureSelector, createReducer, on, props } from '@ngrx/store';
+import {
+  createAction,
+  createFeatureSelector,
+  createReducer,
+  on,
+  props,
+} from '@ngrx/store';
+import { AuthStatus } from '../shared/interfaces/user';
 
 // ACTIONS
-export const setToken = createAction('[Auth Service] Set Token', props<{ token: string }>());
+export const authenticate = createAction('[Auth] Authenticate user');
+export const setAuthStatus = creteAction(
+  '[Auth] Set Auth Status',
+  props<{ status: AuthStatus }>()
+);
+export const setToken = createAction(
+  '[Auth Service] Set Token',
+  props<{ token: string }>()
+);
 export const resetToken = createAction('[Auth Service] Reset Token');
-export const setUser = createAction('[Auth Service] Set User', props<{ user: any }>());
+export const setUser = createAction(
+  '[Auth Service] Set User',
+  props<{ user: User }>()
+);
 export const resetUser = createAction('[Auth Service] Reset User');
 
 // REDUCERS
 export const initialTokenState: string = '';
-export const initialUserState: any = null;
+export const initialUserState: User = null;
+export const authStatusReducer = createReducer(
+  'pending',
+  on(setAuthStatus, (state, { status }) => status)
+);
 export const tokenReducer = createReducer(
   initialTokenState,
   on(setToken, (_, { token }) => token),
@@ -21,5 +43,6 @@ export const userReducer = createReducer(
 );
 
 // SELECTORS
+export const selectAuthStatus = createFeatureSelector<AuthStatus>('authStatus');
 export const selectFeatureToken = createFeatureSelector<string>('token');
-export const selectFeatureUser = createFeatureSelector<any>('user');
+export const selectFeatureUser = createFeatureSelector<User>('user');
