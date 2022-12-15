@@ -4,13 +4,26 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { mergeMap, map, tap, catchError, EMPTY, withLatestFrom } from 'rxjs';
 import { ApiService } from '../shared/api.service';
-import { setRecipesStats } from './recipe.state';
+import { selectRecipesSamples, setRecipesStats } from './recipe.state';
 import { selectFeatureRecipesQuery } from './recipe.state';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeEffectsService {
+  loadRecipesSample$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[Samples] Get recipes samples'),
+      withLatestFrom(this.store.select(selectRecipesSamples)),
+      mergeMap(([{ name, tags, count }]) =>
+        this.api.loadSample(tags, count).pipe(
+          map((res) => ({ type: '[Samples] Set recipes samples', sample: { name, recipes: res.data.items } })),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
+
   loadRecipes$ = createEffect(() =>
     this.actions$.pipe(
       ofType('[Recipes] Set recipes query'),
@@ -22,7 +35,8 @@ export class RecipeEffectsService {
               setRecipesStats({ recipesStats: { total, count, page, limit, pageCount: Math.ceil(total / limit) } })
             );
           }),
-          map((data) => ({ type: '[Recipes] Set recipes list', recipes: data.items }))
+          map((data) => ({ type: '[Recipes] Set recipes list', recipes: data.items })),
+          catchError(() => EMPTY)
         )
       )
     )

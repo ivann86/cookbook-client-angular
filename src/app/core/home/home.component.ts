@@ -1,31 +1,31 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/shared/api.service';
-import { Recipe } from 'src/app/shared/interfaces';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { getRecipesSamples, resetRecipeSamples, selectRecipesSamples } from 'src/app/state';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
-  breakfastSampl$ = this.api.loadSample(['закуска'], 10);
-  lunchSampl$ = this.api.loadSample(['обяд'], 10);
-  dinnerSampl$ = this.api.loadSample(['вечеря'], 10);
-
+export class HomeComponent implements OnInit, OnDestroy {
+  recipeSamples$ = this.store.select(selectRecipesSamples);
+  count: number = 10;
   carousels = [
-    ['Закуска', this.api.loadSample(['закуска'], 10) as Observable<Recipe[]>],
-    ['Обяд', this.api.loadSample(['обяд'], 10)],
-    ['Вечеря', this.api.loadSample(['вечеря'], 10)],
-    ['Салати', this.api.loadSample(['салати'], 10)],
-    ['Сладкиши', this.api.loadSample(['сладкиши'], 10)],
-    ['Печива', this.api.loadSample(['печива'], 10)],
-    ['Здравословни', this.api.loadSample(['здравословно'], 10)],
+    { name: 'Закуска', tags: ['закуска'], count: this.count },
+    { name: 'Обяд', tags: ['обяд'], count: this.count },
+    { name: 'Вечеря', tags: ['вечеря'], count: this.count },
+    { name: 'Салати', tags: ['салати'], count: this.count },
+    { name: 'Сладкиши', tags: ['сладкиши'], count: this.count },
+    { name: 'Печива', tags: ['печива'], count: this.count },
+    { name: 'Здравословни', tags: ['здравословно'], count: this.count },
   ];
 
-  constructor(private api: ApiService) {}
+  constructor(private store: Store) {}
+  ngOnDestroy(): void {
+    this.store.dispatch(resetRecipeSamples());
+  }
 
-  castObservable(obs: any) {
-    return obs as Observable<Recipe[]>;
+  ngOnInit(): void {
+    this.carousels.forEach((carousel) => this.store.dispatch(getRecipesSamples(carousel)));
   }
 }

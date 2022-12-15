@@ -12,10 +12,10 @@
     </div>
   </div>
 
-  <ng-container *ngFor="let carousel of carousels">
-    <h1 class="text-primary text-4xl font-thin py-2 mt-8 border-b-2 border-b-secondary uppercase">{{carousel[0]}}</h1>
+  <ng-container *ngFor="let sample of (recipeSamples$ | async)">
+    <h1 class="text-primary text-4xl font-thin py-2 mt-8 border-b-2 border-b-secondary uppercase">{{sample.name}}</h1>
     <div class="w-full py-4 px-2 flex overflow-scroll gap-4">
-      <app-recipe-card *ngFor="let recipe of (castObservable(carousel[1]) | async)" [recipe]="recipe"></app-recipe-card>
+      <app-recipe-card *ngFor="let recipe of sample.recipes" [recipe]="recipe"></app-recipe-card>
     </div>
   </ng-container>
 

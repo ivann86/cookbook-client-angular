@@ -1,19 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
 import { Recipe, RecipeQuery } from './interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient, private store: Store) {}
+  constructor(private http: HttpClient) {}
 
   public loadSample(tags: string[], limit: number) {
-    return this.http
-      .get<any>('/api/recipes/sample', { params: { tags: tags.join(','), limit } })
-      .pipe<Recipe[]>(map((res) => res.data.items as Recipe[]));
+    return this.http.get<any>('/api/recipes/sample', { params: { tags: tags.join(','), limit } });
   }
 
   public loadRecipes(query: RecipeQuery) {

@@ -1,8 +1,17 @@
 import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
-import { Recipe, RecipeQuery, RecipeStats, User } from '../shared/interfaces';
+import { Recipe, RecipeQuery, RecipeSample, RecipeStats, User } from '../shared/interfaces';
 import { selectFeatureUser } from './auth.state';
 
 // ACTIONS
+export const getRecipesSamples = createAction(
+  '[Samples] Get recipes samples',
+  props<{ name: string; tags: string[]; count: number }>()
+);
+export const setRecipesSamples = createAction(
+  '[Samples] Set recipes samples',
+  props<{ sample: { name: string; recipes: Recipe[] } }>()
+);
+export const resetRecipeSamples = createAction('[Samples] Reset recipe samples');
 export const setRecipesQuery = createAction('[Recipes] Set recipes query', props<{ recipesQuery: RecipeQuery }>());
 export const resetRecipesQuery = createAction('[Recipes] Reset recipes query');
 export const setRecipesStats = createAction('[Recipes] Set recipes stats', props<{ recipesStats: RecipeStats }>());
@@ -32,10 +41,16 @@ export const initalRecipesQueryState: RecipeQuery = {
   owner: '',
   tags,
 };
+
 export const initialRecipesStatsState: RecipeStats = { total: 0, count: 0, limit: 20, page: 0, pageCount: 0 };
 export const initialRecipesListState: Recipe[] = [];
 export const initialRecipeQueryState: string = '';
 export const initialSelectedRecipeState: Recipe | null = null;
+export const recipesSampleReducer = createReducer(
+  [] as any,
+  on(setRecipesSamples, (state, { sample }) => [...state, sample]),
+  on(resetRecipeSamples, () => [])
+);
 export const recipesQueryReducer = createReducer(
   initalRecipesQueryState,
   on(resetRecipesQuery, () => initalRecipesQueryState),
@@ -60,6 +75,7 @@ export const recipeReducer = createReducer(
 );
 
 // SELECTORS
+export const selectRecipesSamples = createFeatureSelector<RecipeSample[]>('samples');
 export const selectFeatureRecipesQuery = createFeatureSelector<RecipeQuery>('recipesQuery');
 export const selectFeatureRecipesStats = createFeatureSelector<RecipeStats>('recipesStats');
 export const selectFeatureRecipesList = createFeatureSelector<Recipe[]>('recipes');

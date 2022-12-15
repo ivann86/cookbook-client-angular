@@ -41,3 +41,9 @@ export interface RecipeQuery {
   owner?: string;
   tags?: { [key: string]: any };
 }
+
+export interface RecipeSample {
+  name: string;
+  tags: string[];
+  recipes: Recipe[];
+}
