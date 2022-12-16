@@ -34,9 +34,8 @@ export class RecipesComponent implements OnInit {
   constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.selectedTags = this.route.snapshot.data['query'].tags.split(',');
-    console.log(this.selectedTags);
     this.store.dispatch(setRecipesQuery({ recipesQuery: this.route.snapshot.data['query'] }));
+    this.selectedTags = this.route.snapshot.data['query'].tags.split(',');
   }
 
   navigatePage(page: number) {
