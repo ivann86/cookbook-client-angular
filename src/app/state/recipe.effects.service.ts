@@ -59,7 +59,13 @@ export class RecipeEffectsService {
       withLatestFrom(this.store.select(selectFeatureRecipesQuery)),
       mergeMap(([{ slug }, recipesQuery]) =>
         this.api.deleteRecipe(slug).pipe(
-          map(() => ({ type: '[Recipes] Set recipes query', recipesQuery })),
+          map(() => {
+            if (this.router.routerState.snapshot.url === `/recipes/${slug}`) {
+              this.router.navigate(['/recipes']);
+              return { type: '[Effect] Recipe deleted' };
+            }
+            return { type: '[Recipes] Set recipes query', recipesQuery };
+          }),
           catchError(() => EMPTY)
         )
       )

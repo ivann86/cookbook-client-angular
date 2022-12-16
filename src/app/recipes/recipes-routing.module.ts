@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: 'recipes',
     component: RecipesComponent,
-    resolve: { query: RecipesQueryResolverService },
+    // resolve: { query: RecipesQueryResolverService },
   },
   {
     path: 'add-recipe',

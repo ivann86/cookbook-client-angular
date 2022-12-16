@@ -1,0 +1,24 @@
+<div class="my-12 flex flex-col gap-12">
+
+  <div *ngIf="(apiStatus$|async)?.status === 'pending'" class="mx-auto  border-4 border-base-300 border-t-primary border-r-primary w-12 h-12 rounded-full animate-spin"></div>
+
+  <div *ngIf="(apiStatus$|async)?.status === 'ready'" class="mx-auto w-full sm:max-w-fit sm:px-4 lg:px-6 sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+    <h1 class="text-primary text-4xl font-thin mb-4  border-b-2 border-b-secondary uppercase col-span-2 lg:col-span-3 xl:col-span-4 2xl:col-span-5 flex flex-wrap">
+      <span class="flex-grow">{{title}} ({{(recipesStats$ | async)?.total}})</span>
+      <div *ngIf="(recipesStats$|async)?.total" class="ml-auto">
+        <select class="select max-w-xs" (change)="selectCount($event)">
+          <option *ngFor="let valueName of (limit | keyvalue)" [value]="valueName.key" [selected]="querySnapshot?.limit == valueName.key">{{valueName.value}}</option>
+        </select>
+        <select class="select max-w-xs" (change)="selectSorting($event)">
+          <option *ngFor="let valueName of (sort | keyvalue)" [value]="valueName.key" [selected]="querySnapshot?.sort+','+querySnapshot?.order === valueName.key">{{valueName.value}}</option>
+        </select>
+      </div>
+    </h1>
+    <app-recipe-card *ngFor="let recipe of recipes$ | async" [recipe]="recipe"></app-recipe-card>
+  </div>
+
+  <ng-container *ngIf="(apiStatus$|async)?.status === 'ready' && (recipesStats$ | async) as stats">
+    <app-pagination [count]="stats.total / stats.limit" [selected]="stats.page" (change)="navigatePage($event)"></app-pagination>
+  </ng-container>
+
+</div>

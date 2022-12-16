@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { deleteRecipe } from 'src/app/state';
-import { ApiService } from '../api.service';
 import { Recipe } from '../interfaces';
 
 @Component({
@@ -31,7 +30,6 @@ export class OwnerActionsComponent {
       return;
     }
     if (confirm(`Are you sure you want to delete recipe "${this.recipe.name}"?`)) {
-      // this.api.deleteRecipe(this.recipe.slug).subscribe(() => {});
       this.store.dispatch(deleteRecipe({ slug: this.recipe.slug }));
       this.delAction.emit();
     }

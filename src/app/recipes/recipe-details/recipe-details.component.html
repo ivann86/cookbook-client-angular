@@ -24,7 +24,7 @@
     </ul>
     <ng-container *ngIf="recipe?.isOwner">
       <div class="divider divider-horizontal"></div>
-      <app-owner-actions size="normal" [recipe]="recipe" id="owner-actions" class="flex gap-2 place-self-center" (delAction)="deleteHandler()"></app-owner-actions> 
+      <app-owner-actions size="normal" [recipe]="recipe" id="owner-actions" class="flex gap-2 place-self-center" ></app-owner-actions> 
     </ng-container>
   </div>
   <p *ngIf="recipe?.description" class="px-2 md:px-0">{{recipe?.description}}</p>

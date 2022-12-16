@@ -28,6 +28,7 @@ export const editRecipe = createAction(
 
 // REDUCERS
 export const initalRecipesQueryState: RecipeQuery = {
+  search: '',
   page: 1,
   limit: 20,
   country: '',
@@ -58,7 +59,7 @@ export const recipesStatsReducer = createReducer(
 export const recipesListReduces = createReducer(
   initialRecipesListState,
   on(setRecipesList, (_, { recipes }) => recipes),
-  on(resetRecipesQuery, () => [])
+  on(resetRecipesList, () => [])
 );
 export const recipeQueryReducer = createReducer(
   initialRecipeQueryState,

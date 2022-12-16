@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { ApiService } from 'src/app/shared/api.service';
 import { Recipe } from 'src/app/shared/interfaces';
 import { selectApiStatus } from 'src/app/state';
@@ -32,10 +32,10 @@ export class RecipeWizardComponent implements OnInit {
   });
   ingredientsInputsGroup = this.fb.group({
     name: ['', [Validators.required]],
-    quantity: [''],
-    units: [''],
+    quantity: ['', [Validators.required]],
+    units: ['', [Validators.required]],
   });
-  cookingStepInput = this.fb.control('', { validators: [Validators.minLength(3)] });
+  cookingStepInput = this.fb.control('', { validators: [Validators.required, Validators.minLength(3)] });
 
   apiStatus$ = this.store.select(selectApiStatus).pipe(
     tap((status) => {
@@ -51,7 +51,7 @@ export class RecipeWizardComponent implements OnInit {
     })
   );
 
-  constructor(private fb: FormBuilder, private api: ApiService, private store: Store) {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   ngOnInit(): void {
     this.form.controls.name.setValue(this.recipe?.name || '');

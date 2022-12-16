@@ -17,8 +17,4 @@ export class RecipeDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(setRecipeQuery({ slug: this.route.snapshot.params['slug'] }));
   }
-
-  deleteHandler() {
-    this.router.navigate(['/recipes']);
-  }
 }

@@ -1,5 +1,5 @@
 
-  <nav class="navbar bg-primary text-primary-content justify-between sticky top-0 z-50 md:px-6">
+  <nav class="navbar bg-primary text-primary-content justify-between md:px-6">
     <ul class="menu menu-horizontal gap-1 p-1  uppercase">
       <li>
         <a class="" routerLink="/">
@@ -20,6 +20,17 @@
         </a>
       </li>
     </ul>
+
+    <form #form="ngForm" (ngSubmit)="search(form.value.search)">
+      <div class="form-control">
+        <div class="input-group">
+          <input type="text" placeholder="Search…" class="input input-sm input-bordered text-base-content xl:w-96" name="search" ngModel [value]="searchValue" />
+          <button class="btn btn-square btn-sm btn-secondary text-secondary-content" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          </button>
+        </div>
+      </div>
+    </form>
 
     <ul *ngIf="!(user$ | async)" class="menu menu-horizontal gap-1 p-1 uppercase">
       <li>

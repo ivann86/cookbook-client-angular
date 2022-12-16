@@ -33,6 +33,7 @@ export interface RecipeStats {
 }
 
 export interface RecipeQuery {
+  search?: string;
   limit?: number | string;
   page?: number | string;
   country?: string;

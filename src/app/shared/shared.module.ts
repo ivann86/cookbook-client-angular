@@ -4,11 +4,12 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { OwnerActionsComponent } from './owner-actions/owner-actions.component';
 import { RecipeCardComponent } from './recipe-card/recipe-card.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { RecipesListComponent } from './recipes-list/recipes-list.component';
 
 @NgModule({
-  declarations: [OwnerActionsComponent, RecipeCardComponent, PaginationComponent],
+  declarations: [OwnerActionsComponent, RecipeCardComponent, PaginationComponent, RecipesListComponent],
   imports: [CommonModule],
-  exports: [RecipeCardComponent, OwnerActionsComponent, PaginationComponent],
+  exports: [RecipeCardComponent, OwnerActionsComponent, PaginationComponent, RecipesListComponent],
   providers: [
     {
       provide: 'token',

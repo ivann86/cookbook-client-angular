@@ -2,6 +2,15 @@
 
   <div class="hidden bg-base-200 md:block  sm:col-span-2">
     <ul class="my-4 menu menu-compact w-52 p-2 rounded-box">
+      <li></li>
+      <li>
+        <div class="form-control">
+          <label class="label cursor-pointer w-full gap-2 p-0">
+            <input type="checkbox" #check [checked]="selectedTags.length === 0" class="checkbox checkbox-xs rounded-sm checkbox-primary" (change)="switchTag('', check.checked)" />
+            <span class="label-text flow-grow w-full">Всички рецепти</span> 
+          </label>
+        </div>
+      </li>
       <ng-container *ngFor="let category of tags">
         <li></li>
         <li class="menu-title">
@@ -19,18 +28,8 @@
     </ul>
   </div>
 
-  <div class="my-8 flex-grow">
-
-    <div *ngIf="(apiStatus$|async)?.status === 'pending'" class="mx-auto  border-4 border-base-300 border-t-primary border-r-primary w-12 h-12 rounded-full animate-spin"></div>
-
-    <div *ngIf="(apiStatus$|async)?.status === 'ready'" class="mb-12 mx-auto w-full sm:max-w-fit sm:px-4 lg:px-6 sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
-      <app-recipe-card *ngFor="let recipe of recipes$ | async" [recipe]="recipe"></app-recipe-card>
-    </div>
-
-    <ng-container *ngIf="(apiStatus$|async)?.status === 'ready' && (recipesStats$ | async) as stats">
-      <app-pagination [count]="stats.total / stats.limit" [selected]="stats.page" (change)="navigatePage($event)"></app-pagination>
-    </ng-container>
-
+  <div class="flex-grow">
+    <app-recipes-list [navigateRouteOnChange]="'recipes'"></app-recipes-list>
   </div>
 
 </div>

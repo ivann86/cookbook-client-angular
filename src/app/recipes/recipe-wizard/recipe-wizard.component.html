@@ -5,10 +5,10 @@
   </div>
 
   <ul class="steps">
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(0)" [ngClass]="currentStep > -1 ? currentStep === 0 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Name and description</span></li>
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(1)" [ngClass]="currentStep > 0 ? currentStep === 1 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Ingredients</span></li>
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(2)" [ngClass]="currentStep > 1 ? currentStep === 2 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Cooking Instructions</span></li>
-    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(3)" [ngClass]="currentStep > 2 ? currentStep === 3 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Final details</span></li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(0)" [ngClass]="currentStep > -1 ? currentStep === 0 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Име и описание</span></li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(1)" [ngClass]="currentStep > 0 ? currentStep === 1 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Продукти</span></li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(2)" [ngClass]="currentStep > 1 ? currentStep === 2 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Инструкции</span></li>
+    <li class="step hover:cursor-pointer hover:text-primary hover:step-primary" (click)="moveStepHandler(3)" [ngClass]="currentStep > 2 ? currentStep === 3 ? ['step-primary', 'text-primary'] : 'step-primary' : ''"><span class="hidden sm:inline">Други</span></li>
   </ul>
 
   <form [formGroup]="form" (submit)="submitHandler()">
@@ -16,15 +16,15 @@
     <!-- STEP 1 -->
     <div [ngClass]="currentStep !== 0 ? 'hidden' : ''">
       <div class="form-control w-full m-0">
-        <input formControlName="name" type="text" name="name" placeholder="Recipe name" class="input input-bordered w-full" [ngClass]="form.get('name')?.invalid && form.get('name')?.dirty ? 'input-error' : ''" />
+        <input formControlName="name" type="text" name="name" placeholder="Въведете име на рецептата" class="input input-bordered w-full" [ngClass]="form.get('name')?.invalid && form.get('name')?.dirty ? 'input-error' : ''" />
         <label class="label">
-          <span *ngIf="form.get('name')?.dirty && form.get('name')?.invalid" class="label-text-alt text-error">The name of the recipe must be at least 3 characters long</span>
+          <span *ngIf="form.get('name')?.dirty && form.get('name')?.invalid" class="label-text-alt text-error">Името трябва да е дълго поне 3 символа</span>
         </label>
       </div>
       <div class="form-control w-full m-0">
-        <textarea formControlName="description" name="description" placeholder="You can add a short description for the recipe" class="h-48 input input-bordered w-full" [ngClass]="form.get('description')?.invalid && form.get('description')?.dirty ? 'input-error' : ''"></textarea>
+        <textarea formControlName="description" name="description" placeholder="Тук можете да добавите кратко описание на рецептата" class="h-48 input input-bordered w-full" [ngClass]="form.get('description')?.invalid && form.get('description')?.dirty ? 'input-error' : ''"></textarea>
         <label class="label">
-          <span *ngIf="form.get('description')?.dirty && form.get('description')?.invalid" class="label-text-alt text-error">Description text cannot exceed 2500 characters</span>
+          <span *ngIf="form.get('description')?.dirty && form.get('description')?.invalid" class="label-text-alt text-error">Максималният разрешен размер на описанието е 2500 символа</span>
         </label>
       </div>
     </div>
@@ -35,21 +35,21 @@
         <li class="flex gap-4" *ngFor="let control of form.controls.ingredients.controls; index as i">
           <div *ngIf="!control?.disabled" [formGroupName]="i" class="flex gap-2 flex-grow"> 
             <div class="form-control flex-grow">
-              <input type="text" name="ingName" placeholder="Ingredient" formControlName="name" class="input input-bordered" >              
+              <input type="text" name="ingName" placeholder="Продукт" formControlName="name" class="input input-bordered" >              
               <label class="label">
-                <span *ngIf="control?.get('name')?.dirty && control?.get('name')?.invalid" class="label-text-alt text-error">Ingredient name is required</span>
+                <span *ngIf="ingredientsInputsGroup.get('name')?.dirty && ingredientsInputsGroup.get('name')?.invalid" class="label-text-alt text-error">Задължително поле</span>
               </label>
             </div>
-            <div class="form-control w-28">
-              <input type="text" name="quantity" placeholder="Quantity" formControlName="quantity" class="input input-bordered" >
+            <div class="form-control w-32">
+              <input type="text" name="quantity" placeholder="Количество" formControlName="quantity" class="input input-bordered" >
               <label class="label">
-                <span *ngIf="control?.get('name')?.dirty && control?.get('name')?.invalid" class="label-text-alt text-error"></span>
+                <span *ngIf="ingredientsInputsGroup.get('units')?.dirty && ingredientsInputsGroup.get('units')?.invalid" class="label-text-alt text-error">Задължително поле</span>
               </label>
             </div>
-            <div class="form-control w-28">
-              <input type="text" name="units" placeholder="Units" formControlName="units" class="input input-bordered" >
+            <div class="form-control w-32">
+              <input type="text" name="units" placeholder="Мярка" formControlName="units" class="input input-bordered" >
               <label class="label">
-                <span *ngIf="control?.get('name')?.dirty && control?.get('name')?.invalid" class="label-text-alt text-error"></span>
+                <span *ngIf="ingredientsInputsGroup.get('units')?.dirty && ingredientsInputsGroup.get('units')?.invalid" class="label-text-alt text-error">Задължително поле</span>
               </label>
             </div>
           </div> 
@@ -72,21 +72,21 @@
         <li class="flex gap-4">
           <div [formGroup]="ingredientsInputsGroup" class="flex gap-2 flex-grow"> 
             <div class="form-control flex-grow">
-              <input type="text" name="ingName" placeholder="Ingredient" formControlName="name" class="input input-bordered" >              
+              <input type="text" name="ingName" placeholder="Продукт" formControlName="name" class="input input-bordered" >              
               <label class="label">
-                <span *ngIf="ingredientsInputsGroup.get('name')?.dirty && ingredientsInputsGroup.get('name')?.invalid" class="label-text-alt text-error">Ingredient name is required</span>
+                <span *ngIf="ingredientsInputsGroup.get('name')?.dirty && ingredientsInputsGroup.get('name')?.invalid" class="label-text-alt text-error">Задължително поле</span>
               </label>
             </div>
-            <div class="form-control w-28">
-              <input type="text" name="quantity" placeholder="Quantity" formControlName="quantity" class="input input-bordered" >
+            <div class="form-control w-32">
+              <input type="text" name="quantity" placeholder="Количество" formControlName="quantity" class="input input-bordered" >
               <label class="label">
-                <span *ngIf="ingredientsInputsGroup.get('quantity')?.dirty && ingredientsInputsGroup.get('quantity')?.invalid" class="label-text-alt text-error">Error</span>
+                <span *ngIf="ingredientsInputsGroup.get('quantity')?.dirty && ingredientsInputsGroup.get('quantity')?.invalid" class="label-text-alt text-error">Задължително поле</span>
               </label>
             </div>
-            <div class="form-control w-28">
-              <input type="text" name="units" placeholder="Units" formControlName="units" class="input input-bordered" >
+            <div class="form-control w-32">
+              <input type="text" name="units" placeholder="Мярка" formControlName="units" class="input input-bordered" >
               <label class="label">
-                <span *ngIf="ingredientsInputsGroup.get('units')?.dirty && ingredientsInputsGroup.get('units')?.invalid" class="label-text-alt text-error">Error</span>
+                <span *ngIf="ingredientsInputsGroup.get('units')?.dirty && ingredientsInputsGroup.get('units')?.invalid" class="label-text-alt text-error">Задължително поле</span>
               </label>
             </div>
           </div> <div class="flex gap-2 ml-auto">
@@ -104,9 +104,9 @@
         <li class="flex gap-4" *ngFor="let control of form.controls.steps.controls; index as i">
           <div class="bg-primary text-primary-content flex-none rounded-full w-8 h-8 flex items-center justify-center">{{i + 1}}</div>
           <div *ngIf="!control.disabled" class="form-control flex-grow">
-            <textarea type="text" name="cookingStep" [formControl]="control" placeholder="Describe the instruction for this step of the meal preparation" class="h-32 input input-bordered flex-grow" (blur)="toggleControlEdit(control)"></textarea>       
+            <textarea type="text" name="cookingStep" [formControl]="control" placeholder="Опишете инструкцията в тази стъпка от приготвянето на ястието" class="h-32 input input-bordered flex-grow" (blur)="toggleControlEdit(control)"></textarea>       
             <label class="label">
-              <span *ngIf="control?.dirty && control.invalid" class="label-text-alt text-error">This step should be at least 3 characters long</span>
+              <span *ngIf="control?.dirty && control.invalid" class="label-text-alt text-error">Не може да е по-кратка от 3 символа</span>
             </label>
            </div>
           <span *ngIf="control.disabled" class="flex-grow place-self-center hover:cursor-pointer hover:text-primary" (click)="toggleControlEdit(control)">{{control.value}}</span>
@@ -122,14 +122,14 @@
         <li class="flex gap-4">
           <div class="bg-primary text-primary-content flex-none rounded-full w-8 h-8 flex items-center justify-center bg-opacity-30">{{form.controls.steps.length + 1}}</div>
           <div *ngIf="!cookingStepInput.disabled" class="form-control flex-grow">
-            <textarea type="text" name="cookingStep" [formControl]="cookingStepInput" placeholder="Describe the instruction for this step of the meal preparation" class="h-32 input input-bordered flex-grow"></textarea>       
+            <textarea type="text" name="cookingStep" [formControl]="cookingStepInput" placeholder="Опишете инструкцията в тази стъпка от приготвянето на ястието" class="h-32 input input-bordered flex-grow"></textarea>       
             <label class="label">
-              <span *ngIf="cookingStepInput?.dirty && cookingStepInput.invalid" class="label-text-alt text-error">This step should be at least 3 characters long</span>
+              <span *ngIf="cookingStepInput?.dirty && cookingStepInput.invalid" class="label-text-alt text-error">Не може да е по-кратка от 3 символа</span>
             </label>
            </div>
           <span *ngIf="cookingStepInput.disabled" class="flex-grow place-self-center hover:cursor-pointer hover:text-primary" (click)="toggleControlEdit(cookingStepInput)">{{cookingStepInput.value}}</span>
           <div class="flex gap-2">
-            <button *ngIf="!cookingStepInput.disabled" disabled="{{cookingStepInput.pristine || cookingStepInput.invalid ? true : ''}}" type="button" class="btn btn-xs btn-success rounded" (click)="pushControlToArray(cookingStepInput, form.controls.steps)">
+            <button *ngIf="!cookingStepInput.disabled" [disabled]="cookingStepInput.invalid" type="button" class="btn btn-xs btn-success rounded" (click)="pushControlToArray(cookingStepInput, form.controls.steps)">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </button>
           </div>
@@ -142,25 +142,25 @@
        <div class="flex gap-4">
           <div class="form-control w-32  m-0">
             <label class="label">
-              <span class="label-text">Time (min)</span>
+              <span class="label-text">Време (мин)</span>
             </label>      
             <input type="number" name="prepTime" placeholder="1" min=1 class="input input-bordered" formControlName="prepTime" />
             <label class="label">
-              <span *ngIf="form.get('prepTime')?.dirty && form.get('prepTime')?.invalid" class="label-text-alt text-error">Must be a positive number</span>
+              <span *ngIf="form.get('prepTime')?.dirty && form.get('prepTime')?.invalid" class="label-text-alt text-error">Поне 1 мин</span>
             </label>
           </div>
           <div class="form-control w-32  m-0">
             <label class="label">
-              <span class="label-text">Portions</span>
+              <span class="label-text">Порции</span>
             </label>      
             <input type="number" name="name" placeholder="1" min=1 class="input input-bordered" formControlName="portions" />
             <label class="label">
-              <span *ngIf="form.get('portions')?.dirty && form.get('portions')?.invalid" class="label-text-alt text-error">Must be a positive number</span>
+              <span *ngIf="form.get('portions')?.dirty && form.get('portions')?.invalid" class="label-text-alt text-error">Минимум 1 порция</span>
             </label>
           </div>
           <div class="form-control w-full ml-8">
             <label class="label">
-              <span class="label-text">Image</span>
+              <span class="label-text">Изображение</span>
             </label>    
             <input type="file" class="file-input file-input-bordered w-full" formControlName="img" (change)="onFileInput($event)" />
           </div>
@@ -169,7 +169,7 @@
       <div class="flex justify-between gap-4">
         <div class="form-control flex-grow">
           <label class="label">
-            <span class="label-text">Tags</span>
+            <span class="label-text">Тагове</span>
           </label> 
           <textarea formControlName="tagsStr" class="textarea textarea-bordered h-full" placeholder="закуска,обяд,вечеря,предястие,основно,десерт,сос,гарнитура,празнична..."></textarea>
           <label class="label">
@@ -182,14 +182,14 @@
     <div class="mt-6 flex justify-between gap-2" >
       <button [disabled]="currentStep === 0"  type="button" class="btn gap-2" (click)="moveStepHandler(currentStep - 1)" [disabled]="form.disabled">
         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-        <span>Previous</span>
+        <span>Назад</span>
       </button>
       <button *ngIf="currentStep < 3" class="btn gap-2"  type="button" (click)="moveStepHandler(currentStep + 1)" [disabled]="form.disabled">
-        <span>Next</span>
+        <span>Напред</span>
         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
       </button>
       <button *ngIf="currentStep===3" [disabled]="form.invalid || form.disabled" class="btn btn-success gap-2" type="submit">
-        <span>Finish</span>
+        <span>Край</span>
         <svg *ngIf="(apiStatus$|async)?.status === 'pending'" class="animate-spin h-6 w-6 text-neutral-content" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
