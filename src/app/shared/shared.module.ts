@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { OwnerActionsComponent } from './owner-actions/owner-actions.component';
 import { RecipeCardComponent } from './recipe-card/recipe-card.component';
 import { PaginationComponent } from './pagination/pagination.component';

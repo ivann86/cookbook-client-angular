@@ -8,10 +8,12 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     component: HomeComponent,
+    title: 'Cookbook - Начало',
   },
   {
     path: '**',
     component: NotFoundComponent,
+    title: 'Cookbook - Page Not Found',
   },
 ];
 

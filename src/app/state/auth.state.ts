@@ -1,5 +1,5 @@
 import { createAction, createFeatureSelector, createReducer, on, props } from '@ngrx/store';
-import { AuthStatus, User } from '../shared/interfaces';
+import { AuthStatus } from '../shared/interfaces';
 
 // ACTIONS
 export const authenticate = createAction('[Auth] Authenticate user');

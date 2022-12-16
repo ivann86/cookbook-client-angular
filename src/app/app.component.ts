@@ -21,7 +21,6 @@ export class AppComponent {
       }, 4000);
     })
   );
-  title = 'cookbook-client';
 
   constructor(private store: Store) {}
 

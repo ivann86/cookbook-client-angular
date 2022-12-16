@@ -29,7 +29,6 @@
   </div>
   <p *ngIf="recipe?.description" class="px-2 md:px-0">{{recipe?.description}}</p>
   <div class="flex flex-col gap-6 lg:gap-6">
-    <!-- <div class="divider text-xl uppercase">Необходими продукти</div> -->
     <h1 class="text-primary text-4xl font-thin py-2 border-b-2 border-b-secondary uppercase">Продукти</h1>
     <div class="px-2 md:px-0 w-full md:max-w-screen-sm lg:max-w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-y-4 gap-x-32">
       <div *ngFor="let ing of recipe?.ingredients" class="flex justify-between gap-16">
@@ -42,7 +41,6 @@
     </div>
   </div>
   <div class="flex flex-col gap-6 lg:gap-6">
-    <!-- <div class="divider text-xl uppercase">Начин на приготвяне</div> -->
     <h1 class="text-primary text-4xl font-thin py-2 border-b-2 border-b-secondary uppercase">Инструкции</h1>
     <ol class="px-2 md:px-0 flex flex-col gap-6">
       <li *ngFor="let step of recipe?.steps; let i = index" class="flex gap-4">

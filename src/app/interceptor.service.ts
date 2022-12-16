@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injectable, Provider } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { setApiStatus } from './state';
 import { selectFeatureToken } from './state/';

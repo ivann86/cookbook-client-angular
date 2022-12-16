@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { tap } from 'rxjs';
 import { selectApiStatus, selectRecipe, setRecipeQuery } from 'src/app/state';
 
 @Component({
@@ -9,10 +11,10 @@ import { selectApiStatus, selectRecipe, setRecipeQuery } from 'src/app/state';
   styleUrls: ['./recipe-details.component.css'],
 })
 export class RecipeDetailsComponent implements OnInit {
-  recipe$ = this.store.select(selectRecipe);
   apiStatus$ = this.store.select(selectApiStatus);
+  recipe$ = this.store.select(selectRecipe).pipe(tap((recipe) => this.title.setTitle('Cookbook - ' + recipe.name)));
 
-  constructor(private store: Store, private route: ActivatedRoute, private router: Router) {}
+  constructor(private store: Store, private route: ActivatedRoute, private title: Title) {}
 
   ngOnInit(): void {
     this.store.dispatch(setRecipeQuery({ slug: this.route.snapshot.params['slug'] }));

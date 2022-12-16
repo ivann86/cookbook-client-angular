@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, EMPTY, map, mergeMap, of, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, map, mergeMap, of, tap } from 'rxjs';
 import { AuthService } from '../shared/auth.service';
 import { User } from '../shared/interfaces';
 import { resetToken, resetUser, setAuthStatus, setToken, setUser } from './auth.state';

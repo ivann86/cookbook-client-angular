@@ -14,6 +14,7 @@ const routes: Routes = [
       loggedInCanActivate: false,
       redirect: '/',
     },
+    title: 'Cookbook - Регистрация',
   },
   {
     path: 'signin',
@@ -23,6 +24,7 @@ const routes: Routes = [
       loggedInCanActivate: false,
       redirect: '/',
     },
+    title: 'Cookbook - Вход',
   },
   {
     path: 'profile',
@@ -32,6 +34,7 @@ const routes: Routes = [
       loggedInCanActivate: true,
       redirect: '/',
     },
+    title: 'Cookbook - Профил',
   },
 ];
 

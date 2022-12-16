@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
-import { ApiService } from 'src/app/shared/api.service';
 import { Recipe } from 'src/app/shared/interfaces';
 import { selectApiStatus } from 'src/app/state';
 

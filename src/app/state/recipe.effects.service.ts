@@ -16,7 +16,7 @@ export class RecipeEffectsService {
       ofType('[Samples] Get recipes samples'),
       mergeMap(({ name, tags, count }) =>
         this.api.loadSample(tags, count).pipe(
-          map((res) => ({ type: '[Samples] Set recipes samples', sample: { name, recipes: res.data.items } })),
+          map((recipes) => ({ type: '[Samples] Set recipes samples', sample: { name, recipes } })),
           catchError(() => EMPTY)
         )
       )
@@ -28,7 +28,6 @@ export class RecipeEffectsService {
       ofType('[Recipes] Set recipes query'),
       mergeMap(({ recipesQuery }) =>
         this.api.loadRecipes(recipesQuery).pipe(
-          map((res) => res.data),
           tap(({ total, count, page, limit }) => {
             this.store.dispatch(
               setRecipesStats({ recipesStats: { total, count, page, limit, pageCount: Math.ceil(total / limit) } })
@@ -46,7 +45,7 @@ export class RecipeEffectsService {
       ofType('[Recipe] Set recipe query'),
       mergeMap((query: any) =>
         this.api.loadRecipe(query.slug).pipe(
-          map((res) => ({ type: '[Recipe] Set selected recipe', recipe: res.data.recipe })),
+          map((recipe) => ({ type: '[Recipe] Set selected recipe', recipe })),
           catchError(() => EMPTY)
         )
       )
@@ -77,7 +76,6 @@ export class RecipeEffectsService {
       ofType('[Add page] Add a recipe'),
       mergeMap(({ recipe, image }) =>
         this.api.addRecipe(recipe, image).pipe(
-          map((res) => res.data.recipe),
           tap((recipe) => this.router.navigate(['recipes', recipe.slug])),
           map(() => ({ type: '[Effect] Add recipe done' })),
           catchError(() => EMPTY)
@@ -91,7 +89,6 @@ export class RecipeEffectsService {
       ofType('[Edit page] Edit a recipe'),
       mergeMap(({ slug, recipe, image }) =>
         this.api.patchRecipe(slug, recipe, image).pipe(
-          map((res) => res.data.recipe),
           tap((recipe) => this.router.navigate(['recipes', recipe.slug])),
           map(() => ({ type: '[Effect] Edit recipe done' })),
           catchError(() => EMPTY)

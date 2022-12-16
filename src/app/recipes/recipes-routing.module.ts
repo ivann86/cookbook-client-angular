@@ -5,13 +5,12 @@ import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { RecipesComponent } from './recipes/recipes.component';
-import { RecipesQueryResolverService } from './resolvers/recipes-query-resolver.service';
 
 const routes: Routes = [
   {
     path: 'recipes',
     component: RecipesComponent,
-    // resolve: { query: RecipesQueryResolverService },
+    title: 'Cookbook - Рецепти',
   },
   {
     path: 'add-recipe',
@@ -21,6 +20,7 @@ const routes: Routes = [
       loggedInCanActivate: true,
       redirect: '/signin',
     },
+    title: 'Cookbook - Добавяне на рецепта',
   },
   {
     path: 'edit-recipe/:slug',
@@ -30,6 +30,7 @@ const routes: Routes = [
       loggedInCanActivate: true,
       redirect: '/signin',
     },
+    title: 'Cookbook - Редактиране на рецепта',
   },
   {
     path: 'recipes/:slug',
