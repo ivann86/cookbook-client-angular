@@ -7,6 +7,11 @@ import { SigninComponent } from './signin/signin.component';
 
 const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'profile',
+  },
+  {
     path: 'register',
     component: RegisterComponent,
     canActivate: [AuthGuardService],

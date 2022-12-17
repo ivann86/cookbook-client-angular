@@ -9,6 +9,10 @@ const routes: Routes = [
     loadChildren: () => import('./recipes/recipes.module').then((m) => m.RecipesModule),
   },
   {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
     path: '',
     pathMatch: 'full',
     component: HomeComponent,

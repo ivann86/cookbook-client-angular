@@ -1,10 +1,8 @@
 import { APP_INITIALIZER, isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { InterceptorProvider } from './interceptor.service';
 import { Store, StoreModule } from '@ngrx/store';
@@ -42,7 +40,6 @@ const appInit = (store: Store) => (): Promise<any> => {
   imports: [
     BrowserModule,
     CoreModule,
-    AuthModule,
     HttpClientModule,
     StoreModule.forRoot({
       router: routerReducer,

@@ -19,7 +19,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     data: {
       loggedInCanActivate: true,
-      redirect: '/signin',
+      redirect: '/auth/signin',
     },
     title: 'Cookbook - Добавяне на рецепта',
   },
@@ -29,7 +29,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     data: {
       loggedInCanActivate: true,
-      redirect: '/signin',
+      redirect: '/auth/signin',
     },
     title: 'Cookbook - Редактиране на рецепта',
   },
