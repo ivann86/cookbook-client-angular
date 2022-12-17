@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.store.dispatch(resetRecipesQuery());
       this.store.dispatch(
         setRecipesQuery({
-          recipesQuery: Object.assign({}, query, queryParams, { owner: user.id }),
+          recipesQuery: Object.assign({}, query, queryParams, { owner: user?.id }),
         })
       );
     });
