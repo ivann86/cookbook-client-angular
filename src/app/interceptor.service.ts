@@ -1,5 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injectable, Provider } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -14,7 +15,7 @@ const API_URL = environment.API_URL;
 export class InterceptorService implements HttpInterceptor {
   private tokenSnapshot = '';
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private router: Router) {
     store.select(selectFeatureToken).subscribe((token) => (this.tokenSnapshot = token));
   }
 
@@ -39,6 +40,10 @@ export class InterceptorService implements HttpInterceptor {
       catchError((err) => {
         if (!req.url.startsWith('/api')) {
           return throwError(() => err);
+        }
+
+        if (err.status === 404) {
+          this.router.navigate(['notfound']);
         }
 
         // Handle expired token error
