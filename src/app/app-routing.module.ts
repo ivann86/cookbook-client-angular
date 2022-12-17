@@ -5,6 +5,10 @@ import { NotFoundComponent } from './core/not-found/not-found.component';
 
 const routes: Routes = [
   {
+    path: 'recipes',
+    loadChildren: () => import('./recipes/recipes.module').then((m) => m.RecipesModule),
+  },
+  {
     path: '',
     pathMatch: 'full',
     component: HomeComponent,
@@ -12,6 +16,11 @@ const routes: Routes = [
   },
   {
     path: '**',
+    redirectTo: 'notfound',
+    title: 'Cookbook - Page Not Found',
+  },
+  {
+    path: 'notfound',
     component: NotFoundComponent,
     title: 'Cookbook - Page Not Found',
   },

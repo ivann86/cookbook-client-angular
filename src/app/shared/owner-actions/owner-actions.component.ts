@@ -22,7 +22,7 @@ export class OwnerActionsComponent {
     if (!this.recipe) {
       return;
     }
-    this.router.navigate(['/edit-recipe/' + this.recipe.slug]);
+    this.router.navigate(['/recipes/edit-recipe/' + this.recipe.slug]);
   }
 
   removeHandler() {

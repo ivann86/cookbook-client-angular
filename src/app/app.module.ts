@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
-import { RecipesModule } from './recipes/recipes.module';
 import { InterceptorProvider } from './interceptor.service';
 import { Store, StoreModule } from '@ngrx/store';
 import {
@@ -44,7 +43,6 @@ const appInit = (store: Store) => (): Promise<any> => {
     BrowserModule,
     CoreModule,
     AuthModule,
-    RecipesModule,
     HttpClientModule,
     StoreModule.forRoot({
       router: routerReducer,

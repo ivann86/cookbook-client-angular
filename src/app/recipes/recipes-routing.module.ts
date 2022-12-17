@@ -8,7 +8,8 @@ import { RecipesComponent } from './recipes/recipes.component';
 
 const routes: Routes = [
   {
-    path: 'recipes',
+    path: '',
+    pathMatch: 'full',
     component: RecipesComponent,
     title: 'Cookbook - Рецепти',
   },
@@ -33,7 +34,7 @@ const routes: Routes = [
     title: 'Cookbook - Редактиране на рецепта',
   },
   {
-    path: 'recipes/:slug',
+    path: ':slug',
     component: RecipeDetailsComponent,
   },
 ];
