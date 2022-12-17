@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS
 import { Injectable, Provider } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { setApiStatus } from './state';
 import { selectFeatureToken } from './state/';
@@ -44,6 +44,7 @@ export class InterceptorService implements HttpInterceptor {
 
         if (err.status === 404) {
           this.router.navigate(['notfound']);
+          return EMPTY;
         }
 
         // Handle expired token error
