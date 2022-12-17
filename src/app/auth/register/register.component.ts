@@ -17,8 +17,8 @@ export class RegisterComponent {
     lastName: [''],
     passwords: this.fb.group(
       {
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        rePassword: ['', [Validators.required, Validators.minLength(6)]],
+        password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*\d)(?=.*[a-z]).*$/)]],
+        rePassword: ['', []],
       },
       { validators: [rePasswordValidator('password', 'rePassword')] }
     ),

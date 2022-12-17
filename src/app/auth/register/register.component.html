@@ -29,7 +29,7 @@
       <div class="form-control w-full">
         <input type="password" name="password" formControlName="password" placeholder="Нова парола" class="input input-bordered w-full" [ngClass]="form.get('passwords')?.get('password')?.invalid && form.get('passwords')?.get('password')?.dirty ? 'input-error' : ''"  />
         <label class="label">
-          <span *ngIf="form.get('passwords')?.get('password')?.dirty && form.get('passwords')?.get('password')?.invalid" class="label-text-alt text-error">Паролата трябва да е поне 6 символа дълга</span>
+          <span *ngIf="form.get('passwords')?.get('password')?.dirty && form.get('passwords')?.get('password')?.invalid" class="label-text-alt text-error">Паролата трябва да е дълга поне 6 символа и да съдържа букви и цифри.</span>
         </label>
       </div>
       <div class="form-control w-full">
