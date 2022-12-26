@@ -1,0 +1,3 @@
+[submodule "cookbook-server"]
+	path = cookbook-server
+	url = https://github.com/ivann86/cookbook-server.git
