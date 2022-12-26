@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API_URL: 'https://api.ivanoff.dev/api/v1',
+  API_URL: '/.netlify/functions/api/v1',
 };
 
 /*
