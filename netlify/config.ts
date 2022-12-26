@@ -1,10 +1,10 @@
-import * as express from 'express';
+import express from 'express';
 import { api } from '../cookbook-server/src/api';
 import { configMongoose } from '../cookbook-server/src/database/config';
 import { createUsersCollection } from '../cookbook-server/src/users';
 import { createInvalidTokensStore, createRecipeStore, createUserStore } from '../cookbook-server/src/database';
 import { createRecipesCollection } from '../cookbook-server/src/recipe';
-import * as cors from 'cors';
+import cors from 'cors';
 import helmet from 'helmet';
 
 const users = createUsersCollection(createUserStore());

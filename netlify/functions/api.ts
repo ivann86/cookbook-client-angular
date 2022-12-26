@@ -1,6 +1,6 @@
 import { HandlerEvent, HandlerContext } from '@netlify/functions';
 import { app, dbConnect } from '../config';
-import * as serverless from 'serverless-http';
+import serverless from 'serverless-http';
 
 const handler = async (event: HandlerEvent, context: HandlerContext) => {
   context.callbackWaitsForEmptyEventLoop = false;
