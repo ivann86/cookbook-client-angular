@@ -2,10 +2,15 @@ import { HandlerEvent, HandlerContext } from '@netlify/functions';
 import { app, dbConnect } from '../config';
 import serverless from 'serverless-http';
 
+let dbConn: null | Promise<any> = null;
+
 const handler = async (event: HandlerEvent, context: HandlerContext) => {
   context.callbackWaitsForEmptyEventLoop = false;
   try {
-    await dbConnect;
+    if (!dbConn) {
+      dbConn = dbConnect;
+      await dbConn;
+    }
     const serverlessHadler = serverless(app, { basePath: '/.netlify/functions/api/' });
     const result = await serverlessHadler(event, context);
     return result;
